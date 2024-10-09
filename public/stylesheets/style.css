@@ -1,8 +1,64 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+header {
+  margin-top: 20px;
+}
+header h1 {
+  font-size: 2.5rem;
+  color: #333;
+}
+header nav {
+  margin-top: 10px;
+}
+header nav a {
+  margin: 0 10px;
+  text-decoration: none;
+  color: #333;
+  font-size: 1rem;
+}
+header nav a:hover {
+  color: #007bff;
 }
 
-a {
-  color: #00B7FF;
+footer {
+  margin-top: 50px;
+  font-size: 0.8rem;
+  color: #666;
 }
+
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background-color: #f9f9f9;
+}
+
+main {
+  margin-top: 50px;
+}
+main h2 {
+  background: -webkit-linear-gradient(left, #00b7ff, #008000);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+main .buttons {
+  margin-top: 40px;
+}
+main .buttons .button {
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  background-color: #28a745;
+  text-decoration: none;
+  margin-right: 10px;
+}
+main .buttons .button:hover {
+  background-color: #218838;
+}
+main .buttons .button.button-secondary {
+  background-color: #007bff;
+}
+main .buttons .button.button-secondary:hover {
+  background-color: #0056b3;
+}
+
+/*# sourceMappingURL=style.css.map */

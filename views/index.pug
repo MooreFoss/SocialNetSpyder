@@ -1,5 +1,23 @@
-extends layout
+doctype html
+html(lang="zh")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title SocialNetSpyder
+    link(rel="stylesheet" href="/stylesheets/style.css")
+  body
+    header
+      h1 SocialNetSpyder
+      nav
+        a(href="https://github.com/MooreFoss/SocialNetSpyder") GITHUB
+    
+    main
+      section
+        h2 一个用于调查社交网站传播路径的工具
 
-block content
-  h1= title
-  p Welcome to #{title}
+        .buttons
+          a.button(href="#") 下载
+          a.button.button-secondary(href="#") 文档
+
+    footer
+      p © 2024 SocialNetSpyder
