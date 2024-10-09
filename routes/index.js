@@ -1,19 +1,20 @@
 const express = require('express');
 const router = express.Router();
+const mongoose = require('mongoose');
+
+router.get('/db-status', (req, res) => {
+  try {
+    const dbStatus = mongoose.connection.readyState === 1 ? '数据库已连接' : '数据库已断开连接';
+    res.json({ status: dbStatus });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server Error');
+  }
+});
+
 
 router.get('/', (req, res) => {
-  res.render('index', { 
-    title: 'MCSMANAGER', 
-    features: [
-      '免费，易用，现代化的游戏服务器管理面板',
-      '支持 Minecraft 和 Steam 游戏服务器',
-      '多用户管理和资源分配',
-      '可拖拽，卡片化的面板网页',
-      '支持分布式，连接多台机器',
-      '安装简单，一键快速开服',
-      '支持运行所有 Docker Hub 镜像'
-    ]
-  });
+  res.render('index', {title: 'SocialNetSpyder'});
 });
 
 module.exports = router;

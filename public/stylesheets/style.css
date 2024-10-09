@@ -60,5 +60,10 @@ main .buttons .button.button-secondary {
 main .buttons .button.button-secondary:hover {
   background-color: #0056b3;
 }
+main #db-status {
+  margin-top: 20px;
+  font-size: 1em;
+  color: #007FFF;
+}
 
 /*# sourceMappingURL=style.css.map */
