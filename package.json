@@ -1,0 +1,39 @@
+{
+  "name": "socialnetspyder",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www",
+    "test": "nodemon ./bin/www"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "mongoose": "^8.7.0",
+    "morgan": "~1.9.1",
+    "pug": "2.0.0-beta11"
+  },
+  "description": "A tool for investigating the spread of social networking sites.",
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MooreFoss/SocialNetSpyder.git"
+  },
+  "keywords": [
+    "social",
+    "nodejs",
+    "express",
+    "pug"
+  ],
+  "author": "MooreFoss",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/MooreFoss/SocialNetSpyder/issues"
+  },
+  "homepage": "https://github.com/MooreFoss/SocialNetSpyder#readme",
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  }
+}
