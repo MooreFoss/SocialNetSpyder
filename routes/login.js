@@ -24,13 +24,11 @@ router.post('/', async (req, res) => {
     // 使用异步函数进行密码比较
     const isMatch = await bcrypt.compare(password, user.password);
     if (isMatch) {
-      // console.log('密码正确');
       const payload = { userId: user.id };
       const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
       res.cookie('token', token, { httpOnly: true });
-      res.redirect('/manage');
+      return res.status(200).json({ msg: '登录成功' });
     } else {
-      // console.log('密码错误');
       return res.status(400).json({ msg: '用户名或密码错误' });
     }
   } catch (err) {

@@ -1,0 +1,78 @@
+// 定义颜色变量
+$primary-color: #3498db;
+$secondary-color: #2ecc71;
+$error-color: #e74c3c;
+$background-color: #ecf0f1;
+$text-color: #2c3e50;
+
+// 全局样式
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: $background-color;
+  color: $text-color;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+// 登录表单容
+main {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  text-align: center;
+}
+
+// 标题样式
+h2 {
+  margin-bottom: 1.5rem;
+  color: $primary-color;
+}
+
+// 表单元素样式
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  label {
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+  }
+
+  input {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+  }
+
+  button {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: $primary-color;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:hover {
+      background-color: adjust-color($primary-color, $lightness: -10%);
+    }
+  }
+}
+
+// 错误消息样式
+#error-message {
+  color: $error-color;
+  margin-top: 1rem;
+  display: none;
+}

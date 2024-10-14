@@ -4,7 +4,8 @@ html(lang="zh")
     meta(charset="UTF-8")
     meta(name="viewport" content="width=device-width, initial-scale=1.0")
     title= title
-    link(rel="stylesheet" href="/stylesheets/style.css")
+    link(rel="stylesheet" href="/stylesheets/index.css")
+    link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css")
     script(src="/javascripts/jquery-3.6.0.min.js")
     script.
       $(document).ready(function() {
@@ -20,16 +21,15 @@ html(lang="zh")
     header
       h1= title
       nav
-        a(href="https://github.com/MooreFoss/SocialNetSpyder") GITHUB
-    
+        a(href="https://github.com/MooreFoss/SocialNetSpyder" class="github-link")
+          i.fab.fa-github
     main
       section
         h2 一个用于调查社交网站传播路径的工具（开发中）
         .buttons
           a.button.use(href="login") 使用
           a.button.wiki(href="#") 文档
-      div#db-status(style="text-align: center; margin-top: 20px;") 正在检查数据库状态...
-
+      div#db-status 正在检查数据库状态...
     footer
       p © 2024 SocialNetSpyder
       a(href="https://beian.miit.gov.cn") 京ICP备2024049257号-1
