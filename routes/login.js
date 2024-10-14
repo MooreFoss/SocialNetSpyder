@@ -3,14 +3,15 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
+require('dotenv').config();
 
 // 渲染登录页面
-router.get('/login', (req, res) => {
+router.get('/', (req, res) => {
   res.render('login');
 });
 
 // 用户登录
-router.post('/login', async (req, res) => {
+router.post('/', async (req, res) => {
   const { username, password } = req.body;
   try {
     // 显式选择密码字段
@@ -19,8 +20,8 @@ router.post('/login', async (req, res) => {
       console.log('用户不存在');
       return res.status(400).json({ msg: '用户名或密码错误' });
     }
-    console.log('用户数据:', user); // 打印用户数据
-    console.log('输入的密码:', password); // 打印输入的密码
+    // console.log('用户数据:', user); // 打印用户数据
+    // console.log('输入的密码:', password); // 打印输入的密码
 
     // 使用回调函数进行密码比较
     bcrypt.compare(password, user.password, function (err, result) {
@@ -31,7 +32,7 @@ router.post('/login', async (req, res) => {
       if (result) {
         console.log('密码正确');
         const payload = { userId: user.id };
-        const token = jwt.sign(payload, 'yourSecretKey', { expiresIn: '1h' });
+        const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
         res.cookie('token', token, { httpOnly: true });
         res.redirect('/manage');
       } else {

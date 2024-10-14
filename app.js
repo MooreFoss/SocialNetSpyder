@@ -26,12 +26,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/', loginRouter); // 使用新的 login.js 路由文件
+app.use('/login', loginRouter); // 使用新的 login.js 路由文件
 app.use('/manage', manageRouter); // 使用新的 manage.js 路由文件
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-  next(createError(404));
+  res.status(404).render('404');
 });
 
 // error handler

@@ -5,7 +5,7 @@ html(lang="zh")
     meta(name="viewport" content="width=device-width, initial-scale=1.0")
     title= title
     link(rel="stylesheet" href="/stylesheets/style.css")
-    script(src="../public/javascripts/jquery-3.6.0.min.js")
+    script(src="/javascripts/jquery-3.6.0.min.js")
     script.
       $(document).ready(function() {
         setTimeout(function() {
@@ -14,7 +14,7 @@ html(lang="zh")
           }).fail(function() {
             $('#db-status').text("无法获取数据库状态");
           });
-        }, 800)
+        }, 800);
       });
   body
     header
@@ -26,7 +26,7 @@ html(lang="zh")
       section
         h2 一个用于调查社交网站传播路径的工具（开发中）
         .buttons
-          a.button.use(href="#") 使用
+          a.button.use(href="login") 使用
           a.button.wiki(href="#") 文档
       div#db-status(style="text-align: center; margin-top: 20px;") 正在检查数据库状态...
 

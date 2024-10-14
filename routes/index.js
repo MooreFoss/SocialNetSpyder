@@ -15,7 +15,7 @@ router.get('/db-status', (req, res) => {
 
 
 router.get('/', (req, res) => {
-  res.render('index', {title: 'SocialNetSpyder'});
+  res.render('index', { title: 'SocialNetSpyder' });
 });
 
 module.exports = router;
