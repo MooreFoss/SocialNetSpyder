@@ -1,0 +1,23 @@
+doctype html
+html(lang="zh")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title 后台管理
+    link(rel="stylesheet" href="/stylesheets/style.css")
+    script.
+      function updateTime() {
+        const now = new Date();
+        const formattedTime = now.toLocaleString();
+        document.getElementById('current-time').innerText = formattedTime;
+      }
+      setInterval(updateTime, 1000); // 每秒更新一次时间
+      window.onload = updateTime; // 页面加载时立即显示时间
+  body
+    main
+      h2 后台管理
+      p 欢迎来到后台管理界面！
+      p 用户名: #{username}
+      p UUID: #{uuid}
+      p 当前时间: 
+        span#current-time #{currentTime}

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+const authMiddleware = require('../middleware/authMiddleware');
 
 router.get('/db-status', (req, res) => {
   try {

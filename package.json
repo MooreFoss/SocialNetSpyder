@@ -8,15 +8,18 @@
     "sass": "sass --watch scss/styles.scss:public/stylesheets/style.css"
   },
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "dotenv": "^16.4.5",
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.7.0",
     "morgan": "~1.9.1",
     "pug": "2.0.0-beta11",
-    "sass": "^1.79.4"
+    "sass": "^1.79.4",
+    "uuid": "^10.0.0"
   },
   "description": "A tool for investigating the spread of social networking sites.",
   "main": "app.js",
