@@ -1,10 +1,13 @@
 const mongoose = require('mongoose');
+require('dotenv').config();
 
 const connectDB = async () => {
   try {
-    await mongoose.connect('mongodb://hk.botium.cn:27017/SocialNetSpyder', {
+    await mongoose.connect(process.env.DB_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
+      user: process.env.DB_USER,
+      pass: process.env.DB_PASS,
     });
     console.log('MongoDB connected');
   } catch (err) {
