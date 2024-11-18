@@ -6,8 +6,9 @@ const logger = require('morgan');
 const connectDB = require('./config/db'); // 导入数据库连接文件
 
 const indexRouter = require('./routes/index');
-const loginRouter = require('./routes/login'); // 引用新的 login.js 路由文件
-const manageRouter = require('./routes/manage'); // 引用新的 manage.js 路由文件
+const loginRouter = require('./routes/login');
+const manageRouter = require('./routes/manage');
+const logoutRouter = require('./routes/logout');
 
 const app = express();
 
@@ -24,8 +25,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/login', loginRouter); // 使用新的 login.js 路由文件
-app.use('/manage', manageRouter); // 使用新的 manage.js 路由文件
+app.use('/login', loginRouter);
+app.use('/manage', manageRouter);
+app.use('/logout', logoutRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -4,20 +4,93 @@ html(lang="zh")
     meta(charset="UTF-8")
     meta(name="viewport" content="width=device-width, initial-scale=1.0")
     title 后台管理
-    link(rel="stylesheet" href="/stylesheets/index.css")
+    link(rel="stylesheet" href="/stylesheets/manage.css")
+    link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css")
+  body
+    .dashboard-container
+      .sidebar
+        .sidebar-header
+          h3 SocialNetSpyder
+        nav.sidebar-nav
+          ul
+            li.active
+              a(href="#dashboard")
+                i.fas.fa-home
+                span 仪表盘
+            li
+              a(href="#tasks")
+                i.fas.fa-tasks
+                span 页面管理
+            li
+              a(href="#data")
+                i.fas.fa-database
+                span 数据分析
+            li
+              a(href="#settings")
+                i.fas.fa-cog
+                span 系统设置
+      .main-content
+        .top-bar
+          .user-info
+            span 欢迎，#{username}
+            span.divider |
+            span#current-time
+          .actions
+            button.btn-logout
+              i.fas.fa-sign-out-alt
+              span 退出
+        .content-area
+          h2 仪表盘
+          .dashboard-welcome
+            h3 欢迎来到后台管理界面！
+          .dashboard-widgets
+            .widget.user-widget
+              h3
+                i.fas.fa-user
+                span 用户信息
+              .widget-content
+                p
+                  span.label 用户名：
+                  span.value #{username}
+                p
+                  span.label UUID：
+                  span.value #{uuid}
+            .widget.time-widget
+              h3
+                i.fas.fa-clock
+                span 系统时间
+              .widget-content
+                p.current-time
+                  span.label 当前时间：
+                  span#dashboard-time
+            .widget.status-widget
+              h3
+                i.fas.fa-info-circle
+                span 系统状态
+              .widget-content
+                p 系统运行正常
+
     script.
+      // 原有的时间更新代码保持不变
       function updateTime() {
         const now = new Date();
-        const formattedTime = now.toLocaleString();
+        const formattedTime = now.toLocaleString('zh-CN');
         document.getElementById('current-time').innerText = formattedTime;
+        document.getElementById('dashboard-time').innerText = formattedTime;
       }
-      setInterval(updateTime, 1000); // 每秒更新一次时间
-      window.onload = updateTime; // 页面加载时立即显示时间
-  body
-    main
-      h2 后台管理
-      p 欢迎来到后台管理界面！
-      p 用户名: #{username}
-      p UUID: #{uuid}
-      p 当前时间: 
-        span#current-time #{currentTime}
+      setInterval(updateTime, 1000);
+      window.onload = updateTime;
+
+      // 添加退出按钮点击处理
+      document.querySelector('.btn-logout').addEventListener('click', function() {
+        fetch('/logout', {
+          method: 'POST',
+          credentials: 'same-origin'
+        }).then(response => {
+          if(response.ok) {
+            window.location.href = '/login';
+          }
+        }).catch(err => {
+          console.error('退出失败:', err);
+        });
+      });
