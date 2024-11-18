@@ -27,7 +27,10 @@ html(lang="zh")
       section
         h2 一个用于调查社交网站传播路径的工具（开发中）
         .buttons
-          a.button.use(href="login") 使用
+          if isLoggedIn
+            a.button.use(href="/manage") 使用
+          else 
+            a.button.use(href="/login") 使用
           a.button.wiki(href="#") 文档
       div#db-status 正在检查数据库状态...
     footer

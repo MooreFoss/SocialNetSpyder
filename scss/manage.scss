@@ -42,50 +42,69 @@ body {
 
 // 侧边栏样式
 .sidebar {
-  background: #fff;
-  border-right: 1px solid $border-color;
-  padding: 1rem;
-
+  width: 250px;
+  height: 100vh;
+  background: #2c3e50;
+  color: #ecf0f1;
+  
+  // 标题区域
   &-header {
-    padding: 1rem 0;
-    border-bottom: 1px solid $border-color;
+    padding: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
     
     h3 {
-      color: $primary-color;
-      font-size: 1.5rem;
+      margin: 0;
+      
+      a {
+        color: inherit;
+        text-decoration: none;
+        font-size: 1.5rem;
+        
+        &:hover {
+          color: #3498db;
+        }
+      }
     }
   }
 
+  // 导航区域
   &-nav {
+    padding: 15px 0;
+
     ul {
       list-style: none;
-      margin-top: 1rem;
-    }
+      padding: 0;
+      margin: 0;
 
-    li {
-      margin: 0.5rem 0;
+      li {
+        padding: 0;
+        
+        a {
+          display: flex;
+          align-items: center;
+          padding: 12px 20px;
+          color: #ecf0f1;
+          text-decoration: none;
+          transition: all 0.3s ease;
 
-      &.active a {
-        background-color: $primary-color;
-        color: white;
-      }
-    }
+          i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+          }
 
-    a {
-      @include flex-center;
-      padding: 0.75rem 1rem;
-      color: $text-color;
-      text-decoration: none;
-      border-radius: 4px;
-      transition: background-color $transition-time;
+          &:hover {
+            background: rgba(255,255,255,0.1);
+          }
+        }
 
-      &:hover {
-        background-color: $secondary-color;
-      }
-
-      i {
-        margin-right: 0.5rem;
-        width: 20px;
+        &.active {
+          background: #34495e;
+          
+          a {
+            color: #3498db;
+          }
+        }
       }
     }
   }
