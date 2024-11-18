@@ -11,6 +11,7 @@ $transition-time: 0.3s;
 
 @import 'pages/tasks';
 @import 'pages/files';
+@import 'pages/share';
 
 // Mixins
 @mixin flex-center {
@@ -145,26 +146,59 @@ body {
   }
 }
 
-.sidebar-nav .submenu {
-  display: none;
-  background: rgba(0,0,0,0.1);
-}
-
-.sidebar-nav .submenu-arrow {
-  float: right;
-  transition: transform 0.3s;
-}
-
-.sidebar-nav .submenu-arrow.rotated {
-  transform: rotate(180deg);
-}
-
-.sidebar-nav .submenu a {
-  padding-left: 3rem;
-}
-
-.sidebar-nav .has-submenu {
-  cursor: pointer;
+.sidebar-nav {
+  // 现有样式保持不变
+  
+  .has-submenu {
+    > a {
+      position: relative;
+      padding-right: 40px;
+      cursor: pointer;
+      
+      .submenu-arrow {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        transition: transform 0.3s;
+      }
+      
+      &.active .submenu-arrow {
+        transform: translateY(-50%) rotate(180deg);
+      }
+    }
+    
+    .submenu {
+      display: none;
+      
+      &.show {
+        display: block;
+      }
+      
+      li a {
+        padding-left: 3rem;
+      }
+    }
+    
+    .submenu-arrow {
+      float: right;
+      transition: transform 0.3s;
+      
+      &.active {
+        transform: rotate(180deg);
+      }
+    }
+  }
+  
+  li {
+    &.active {
+      a {
+        i.fa-share-alt {
+          color: #3498db;
+        }
+      }
+    }
+  }
 }
 
 // 主内容区域

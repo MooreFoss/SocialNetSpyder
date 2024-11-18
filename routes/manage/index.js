@@ -23,5 +23,6 @@ router.use('/tasks', require('./tasks'));
 router.use('/tasks/files', require('./files'));  // 修改这一行
 router.use('/data', require('./data'));
 router.use('/settings', require('./settings'));
+router.use('/share', require('./share'));
 
 module.exports = router;

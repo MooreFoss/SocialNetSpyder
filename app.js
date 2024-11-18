@@ -10,6 +10,7 @@ const loginRouter = require('./routes/login');
 const manageRouter = require('./routes/manage/index'); // 确保这一行存在
 const logoutRouter = require('./routes/logout');
 const registerRouter = require('./routes/register');
+const shareRouter = require('./routes/share');
 
 const app = express();
 
@@ -29,6 +30,7 @@ app.use('/login', loginRouter);
 app.use('/manage', manageRouter); // 确保这一行存在
 app.use('/logout', logoutRouter);
 app.use('/register', registerRouter);
+app.use('/s', shareRouter);
 
 app.use(function (req, res, next) {
   res.status(404).render('404');

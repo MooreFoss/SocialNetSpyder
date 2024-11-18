@@ -1,0 +1,176 @@
+extends ../layout
+
+block content
+  .share-management
+    h2 分享链接管理
+
+    // 新建分享链接按钮
+    .share-actions
+      button#createNewShareBtn.btn
+        i.fas.fa-plus
+        span 新建分享链接
+
+    // 新建分享链接的模态弹窗
+    .modal#createShareModal
+      .modal-content
+        .modal-header
+          h3 新建分享链接
+          span.close &times;
+        .modal-body
+          form#createShareForm
+            .form-group
+              label(for="pageSelect") 选择页面
+              select#pageSelect(name="pageId" required)
+                option(value="") 请选择页面...
+            button(type="submit") 创建分享链接
+
+    // 分享链接列表
+    .share-list-container
+      .share-list
+        h3 分享链接列表
+        table.share-table
+          thead
+            tr
+              th 页面标题
+              th 链接ID
+              th 创建时间 
+              th 状态
+              th 访问次数
+              th 操作
+          tbody#sharesList
+
+block pageScripts
+  script.
+    $(document).ready(function() {
+      const modal = $('#createShareModal');
+      const closeBtn = $('.close');
+      
+      // 打开弹窗
+      $('#createNewShareBtn').click(function() {
+        loadPages();
+        modal.css('display', 'block');
+      });
+      
+      // 关闭弹窗
+      closeBtn.click(function() {
+        modal.css('display', 'none');
+      });
+      
+      // 点击弹窗外部关闭
+      $(window).click(function(e) {
+        if (e.target === modal[0]) {
+          modal.css('display', 'none');
+        }
+      });
+      
+      // 加载页面列表
+      function loadPages() {
+        $.get('/manage/tasks/pages', function(pages) {
+          const select = $('#pageSelect');
+          select.empty();
+          select.append('<option value="">请选择页面...</option>');
+          
+          pages.forEach(page => {
+            select.append(`<option value="${page.pageId}">${page.title}</option>`);
+          });
+        });
+      }
+
+      // 创建分享链接
+      $('#createShareForm').submit(function(e) {
+        e.preventDefault();
+        const pageId = $('#pageSelect').val();
+        
+        if (!pageId) {
+          alert('请选择页面');
+          return;
+        }
+
+        $.ajax({
+          type: 'POST',
+          url: '/manage/share/create',
+          data: { pageId },
+          success: function(response) {
+            const shareUrl = window.location.origin + response.shareUrl;
+            alert(`分享链接创建成功！\n${shareUrl}`);
+            modal.css('display', 'none');
+            loadShareLinks();
+          },
+          error: function(xhr) {
+            alert('创建分享链接失败');
+          }
+        });
+      });
+
+      // 加载所有分享链接
+      function loadShareLinks() {
+        $.get('/manage/share/all', function(shares) {
+          const tbody = $('#sharesList');
+          tbody.empty();
+          
+          shares.forEach(share => {
+            const tr = $('<tr>');
+            tr.append(`<td>${share.pageTitle}</td>`);
+            tr.append(`<td>${share.linkId}</td>`);
+            tr.append(`<td>${new Date(share.createdAt).toLocaleString()}</td>`);
+            tr.append(`<td>${share.isActive ? '启用' : '禁用'}</td>`);
+            tr.append(`<td>${share.visitCount || 0}</td>`);
+            
+            const actions = $('<td>');
+            const shareUrl = window.location.origin + `/s/${share.linkId}`;
+            
+            actions.append(`
+              <button onclick="copyShareUrl('${shareUrl}')">复制链接</button> | 
+              <button onclick="toggleLinkStatus('${share.linkId}', ${!share.isActive})">
+                ${share.isActive ? '禁用' : '启用'}
+              </button> | 
+              <button onclick="deleteShareLink('${share.linkId}')">删除</button>
+            `);
+            
+            tr.append(actions);
+            tbody.append(tr);
+          });
+        });
+      }
+
+      window.copyShareUrl = function(url) {
+        navigator.clipboard.writeText(url).then(() => {
+          alert('链接已复制到剪贴板');
+        }).catch(() => {
+          alert('复制失败，请手动复制：' + url);
+        });
+      };
+
+      window.toggleLinkStatus = function(linkId, status) {
+        $.ajax({
+          type: 'POST',
+          url: '/manage/share/toggle',
+          data: { linkId, status },
+          success: function() {
+            loadShareLinks();
+          },
+          error: function() {
+            alert('操作失败');
+          }
+        });
+      };
+
+      window.deleteShareLink = function(linkId) {
+        if (confirm('确定要删除此分享链接吗？')) {
+          $.ajax({
+            type: 'POST',
+            url: '/manage/share/delete',
+            data: { linkId },
+            success: function() {
+              loadShareLinks();
+            },
+            error: function() {
+              alert('删除失败');
+            }
+          });
+        }
+      };
+
+      // 初始加载分享链接列表
+      loadShareLinks();
+    });

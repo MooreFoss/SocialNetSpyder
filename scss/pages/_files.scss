@@ -143,3 +143,35 @@
     }
   }
 }
+
+.file-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+  gap: 1rem;
+
+  h2 {
+    margin: 0;
+  }
+
+  .btn-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    color: $text-color;
+    text-decoration: none;
+    border: 1px solid $border-color;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+
+    i {
+      font-size: 0.9em;
+    }
+
+    &:hover {
+      background: $secondary-color;
+    }
+  }
+}

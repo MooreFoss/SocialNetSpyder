@@ -51,10 +51,13 @@ router.get('/p/:pageId', async (req, res) => {
     }
 
     if (page.type === 'link') {
-      // 外部链接直接重定向
-      return res.redirect(page.content);
+      // 改为渲染带iframe的模板
+      return res.render('iframe', {
+        title: page.title,
+        url: page.content 
+      });
     } else {
-      // 静态页面返回index.html
+      // 静态页面保持不变
       const filePath = path.join(__dirname, `../data/${page.userId}/${page.pageId}/index.html`);
       res.sendFile(filePath, err => {
         if (err) {

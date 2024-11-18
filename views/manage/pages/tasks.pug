@@ -3,24 +3,32 @@ extends ../layout
 block content
   h2 页面管理
   .page-management
-    .create-page-section
-      h3 创建新页面
-      form#createPageForm.management-form
-        .form-group
-          label(for="title") 页面标题
-          input#title(type="text" name="title" required)
-        
-        .form-group
-          label(for="type") 页面类型
-          select#type(name="type" required)
-            option(value="static") 静态网页
-            option(value="link") 外部链接
-        
-        .form-group#urlGroup(style="display: none;")
-          label(for="url") 外部链接
-          input#url(type="url" name="url" placeholder="https://")
-        
-        button(type="submit") 创建页面
+    .actions
+      button#createPageBtn.btn 新建页面
+
+    // 创建页面的模态弹窗
+    .modal#createPageModal
+      .modal-content
+        .modal-header
+          h3 创建新页面
+          span.close &times;
+        .modal-body
+          form#createPageForm.management-form
+            .form-group
+              label(for="title") 页面标题
+              input#title(type="text" name="title" required)
+            
+            .form-group
+              label(for="type") 页面类型
+              select#type(name="type" required)
+                option(value="static") 静态网页
+                option(value="link") 外部链接
+            
+            .form-group#urlGroup(style="display: none;")
+              label(for="url") 外部链接
+              input#url(type="url" name="url" placeholder="https://")
+            
+            button(type="submit") 创建页面
 
     .page-list-section
       h3 页面列表
@@ -38,6 +46,27 @@ block content
 block pageScripts
   script.
     $(document).ready(function() {
+      const modal = $('#createPageModal');
+      const closeBtn = $('.close');
+      const createBtn = $('#createPageBtn');
+
+      // 打开弹窗
+      createBtn.click(function() {
+        modal.css('display', 'block');
+      });
+
+      // 关闭弹窗
+      closeBtn.click(function() {
+        modal.css('display', 'none');
+      });
+
+      // 点击弹窗外部关闭
+      $(window).click(function(e) {
+        if (e.target === modal[0]) {
+          modal.css('display', 'none');
+        }
+      });
+
       // 根据页面类型切换表单
       $('#type').change(function() {
         if ($(this).val() === 'link') {
@@ -62,6 +91,7 @@ block pageScripts
           data: formData,
           success: function(response) {
             alert('创建成功');
+            modal.css('display', 'none');
             loadPages();
             $('#createPageForm')[0].reset();
           },

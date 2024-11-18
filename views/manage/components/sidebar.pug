@@ -12,10 +12,14 @@
         a(href="/manage/tasks")
           i.fas.fa-tasks
           span 页面管理
+      li(class=currentPage === 'share' ? 'active' : '')
+        a(href="/manage/share")
+          i.fas.fa-share-alt
+          span 分享管理
       li(class=currentPage === 'data' ? 'active' : '')
         a(href="/manage/data")
           i.fas.fa-database
-          span 数据分析
+          span 数据分析  
       li(class=currentPage === 'settings' ? 'active' : '')
         a(href="/manage/settings")
           i.fas.fa-cog

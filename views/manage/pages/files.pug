@@ -1,7 +1,12 @@
 extends ../layout
 
 block content
-  h2 文件管理 - #{page.title}
+  .file-header
+    .back-btn
+      a.btn.btn-back(href="/manage/tasks")
+        i.fas.fa-arrow-left
+        span 返回
+    h2 文件管理 - #{page.title}
   .file-manager
     .upload-section
       h3 上传文件
@@ -34,14 +39,12 @@ block content
 
 block pageScripts
   script.
-    // 添加必要的变量到客户端
     const pageId = '#{pageId}';
     const userId = '#{userId}';
 
     $(document).ready(function() {
       const uploadArea = $('.upload-area');
       
-      // 拖拽上传
       uploadArea.on('dragover', function(e) {
         e.preventDefault();
         $(this).addClass('dragover');
@@ -59,12 +62,10 @@ block pageScripts
         handleFiles(items);
       });
       
-      // 文件选择处理
       $('#fileInput, #folderInput').change(function() {
         handleFiles(this.files);
       });
       
-      // 处理文件上传
       function handleFiles(files) {
         const formData = new FormData();
         for(let i = 0; i < files.length; i++) {
@@ -108,7 +109,6 @@ block pageScripts
         });
       }
 
-      // 加载文件列表
       function loadFiles() {
         $.get(`/manage/tasks/files/${pageId}/list`, function(files) {
           const tbody = $('#filesList');
@@ -130,7 +130,6 @@ block pageScripts
         });
       }
 
-      // 格式化文件大小
       function formatSize(bytes) {
         if (bytes === 0) return '0 B';
         const k = 1024;
@@ -139,7 +138,6 @@ block pageScripts
         return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
       }
 
-      // 删除文件
       window.deleteFile = function(filename) {
         if (confirm('确定要删除此文件吗？')) {
           $.ajax({
