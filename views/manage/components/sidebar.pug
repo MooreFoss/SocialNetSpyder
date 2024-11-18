@@ -1,0 +1,21 @@
+.sidebar
+  .sidebar-header
+    h3 SocialNetSpyder
+  nav.sidebar-nav
+    ul
+      li(class=currentPage === 'dashboard' ? 'active' : '')
+        a(href="/manage/dashboard")
+          i.fas.fa-home
+          span 仪表盘
+      li(class=currentPage === 'tasks' ? 'active' : '')
+        a(href="/manage/tasks")
+          i.fas.fa-tasks
+          span 页面管理
+      li(class=currentPage === 'data' ? 'active' : '')
+        a(href="/manage/data")
+          i.fas.fa-database
+          span 数据分析
+      li(class=currentPage === 'settings' ? 'active' : '')
+        a(href="/manage/settings")
+          i.fas.fa-cog
+          span 系统设置

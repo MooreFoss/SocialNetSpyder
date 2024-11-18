@@ -1,0 +1,33 @@
+extends ../layout
+
+block content
+  h2 仪表盘
+  .dashboard-welcome
+    h3 欢迎来到后台管理界面！
+  .dashboard-widgets
+    .widget.user-widget
+      h3
+        i.fas.fa-user
+        span 用户信息
+      .widget-content
+        p
+          span.label 用户名：
+          span.value #{username}
+        p
+          span.label UUID：
+          span.value #{uuid}
+    .widget.time-widget
+      h3
+        i.fas.fa-clock
+        span 系统时间
+      .widget-content
+        p#dashboard-time
+
+block pageScripts
+  script.
+    function updateTime() {
+      const now = new Date();
+      document.getElementById('dashboard-time').innerText = now.toLocaleString('zh-CN');
+    }
+    setInterval(updateTime, 1000);
+    updateTime();

@@ -1,0 +1,19 @@
+doctype html
+html(lang="zh")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title 后台管理
+    link(rel="stylesheet" href="/stylesheets/manage.css")
+    link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css")
+    block scripts
+  body
+    .dashboard-container
+      include components/sidebar
+      .main-content
+        include components/topbar
+        .content-area
+          block content
+    
+    script(src="/javascripts/jquery-3.6.0.min.js")
+    block pageScripts

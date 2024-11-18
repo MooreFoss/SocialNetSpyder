@@ -1,0 +1,32 @@
+.top-bar
+  .user-info
+    span 欢迎，#{username}
+    span.divider |
+    span#current-time
+  .actions
+    button.btn-logout
+      i.fas.fa-sign-out-alt
+      span 退出
+
+script.
+  // 更新时间
+  function updateTime() {
+    const now = new Date();
+    document.getElementById('current-time').innerText = now.toLocaleString('zh-CN');
+  }
+  setInterval(updateTime, 1000);
+  updateTime();
+
+  // 退出按钮处理
+  document.querySelector('.btn-logout').addEventListener('click', function() {
+    fetch('/logout', {
+      method: 'POST',
+      credentials: 'same-origin'
+    }).then(response => {
+      if(response.ok) {
+        window.location.href = '/login';
+      }
+    }).catch(err => {
+      console.error('退出失败:', err);
+    });
+  });
