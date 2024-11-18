@@ -75,4 +75,18 @@ form button:hover {
   text-decoration: underline;
 }
 
-/*# sourceMappingURL=login.css.map */
+.login-link {
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  color: #2c3e50;
+}
+.login-link a {
+  color: #3498db;
+  text-decoration: none;
+  margin-left: 0.3rem;
+}
+.login-link a:hover {
+  text-decoration: underline;
+}
+
+/*# sourceMappingURL=register.css.map */

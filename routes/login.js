@@ -24,7 +24,7 @@ router.post('/', async (req, res) => {
     // 使用异步函数进行密码比较
     const isMatch = await bcrypt.compare(password, user.password);
     if (isMatch) {
-      const payload = { userId: user.id };
+      const payload = { userId: user.userId };
       const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
       res.cookie('token', token, { httpOnly: true });
       return res.status(200).json({ msg: '登录成功' });

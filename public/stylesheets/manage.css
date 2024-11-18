@@ -1,3 +1,199 @@
+.page-management {
+  padding: 2rem;
+}
+.page-management .create-page-section {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+.page-management .create-page-section h3 {
+  margin-bottom: 1.5rem;
+  color: #1a73e8;
+}
+.page-management .management-form .form-group {
+  margin-bottom: 1rem;
+}
+.page-management .management-form .form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+.page-management .management-form .form-group input, .page-management .management-form .form-group select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+.page-management .management-form .form-group input:focus, .page-management .management-form .form-group select:focus {
+  outline: none;
+  border-color: #1a73e8;
+}
+.page-management .management-form button {
+  background: #1a73e8;
+  color: #fff;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.page-management .management-form button:hover {
+  background: rgb(18.8928571429, 92, 188.1071428571);
+}
+.page-management .page-table {
+  width: 100%;
+  background: #fff;
+  border-radius: 8px;
+  border-collapse: collapse;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.page-management .page-table th, .page-management .page-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0;
+}
+.page-management .page-table th {
+  background: #f8f9fa;
+  font-weight: 500;
+}
+.page-management .page-table .actions a, .page-management .page-table .actions button {
+  color: #1a73e8;
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  font-size: inherit;
+  font-family: inherit;
+  vertical-align: middle;
+}
+.page-management .page-table .actions a:hover, .page-management .page-table .actions button:hover {
+  text-decoration: underline;
+}
+
+.file-manager {
+  padding: 2rem;
+}
+.file-manager .upload-section, .file-manager .files-section {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+.file-manager .upload-section .upload-area {
+  border: 2px dashed #e0e0e0;
+  border-radius: 8px;
+  padding: 2rem;
+  text-align: center;
+  transition: all 0.3s;
+}
+.file-manager .upload-section .upload-area.dragover {
+  border-color: #1a73e8;
+  background: rgba(26, 115, 232, 0.05);
+}
+.file-manager .upload-section .upload-area .upload-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.file-manager .upload-section .upload-area .upload-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 1rem;
+}
+.file-manager .upload-section .upload-area .upload-btn.files-btn {
+  background: #1a73e8;
+  color: white;
+}
+.file-manager .upload-section .upload-area .upload-btn.files-btn:hover {
+  background: rgb(18.8928571429, 92, 188.1071428571);
+}
+.file-manager .upload-section .upload-area .upload-btn.folder-btn {
+  background: white;
+  color: #1a73e8;
+  border: 1px solid #1a73e8;
+}
+.file-manager .upload-section .upload-area .upload-btn.folder-btn:hover {
+  background: rgba(26, 115, 232, 0.05);
+}
+.file-manager .upload-section .upload-area .upload-btn i {
+  font-size: 1.2em;
+}
+.file-manager .upload-section .upload-area .upload-tips {
+  color: #333;
+  opacity: 0.7;
+  margin-top: 1rem;
+}
+.file-manager .upload-section .upload-area .progress {
+  margin-top: 1rem;
+  background: #f0f0f0;
+  border-radius: 4px;
+  height: 4px;
+  overflow: hidden;
+  position: relative;
+}
+.file-manager .upload-section .upload-area .progress .progress-bar {
+  background: #1a73e8;
+  height: 100%;
+  width: 0;
+  transition: width 0.3s;
+}
+.file-manager .upload-section .upload-area .progress .progress-text {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  font-size: 0.875rem;
+  color: #1a73e8;
+  top: calc(100% + 0.5rem);
+}
+.file-manager .progress {
+  margin-top: 1rem;
+  height: 20px;
+  background: #f0f0f0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.file-manager .progress .progress-bar {
+  height: 100%;
+  background: #1a73e8;
+  width: 0;
+  transition: width 0.3s;
+}
+.file-manager .files-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.file-manager .files-table th, .file-manager .files-table td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0;
+}
+.file-manager .files-table th {
+  font-weight: 500;
+  color: #333;
+}
+.file-manager .files-table .actions a, .file-manager .files-table .actions button {
+  color: #1a73e8;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  font-size: inherit;
+}
+.file-manager .files-table .actions a:hover, .file-manager .files-table .actions button:hover {
+  text-decoration: underline;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -68,6 +264,52 @@ body {
 }
 .sidebar-nav ul li.active a {
   color: #3498db;
+}
+.sidebar .submenu {
+  display: none;
+  padding-left: 20px;
+}
+.sidebar .submenu.show {
+  display: block;
+}
+.sidebar .submenu li a {
+  padding: 8px 20px;
+  font-size: 0.9em;
+}
+.sidebar .has-submenu {
+  position: relative;
+}
+.sidebar .has-submenu .submenu-arrow {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: transform 0.3s;
+}
+.sidebar .has-submenu .submenu-arrow.rotated {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.sidebar-nav .submenu {
+  display: none;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-nav .submenu-arrow {
+  float: right;
+  transition: transform 0.3s;
+}
+
+.sidebar-nav .submenu-arrow.rotated {
+  transform: rotate(180deg);
+}
+
+.sidebar-nav .submenu a {
+  padding-left: 3rem;
+}
+
+.sidebar-nav .has-submenu {
+  cursor: pointer;
 }
 
 .main-content {

@@ -1,0 +1,145 @@
+@use "sass:color";
+.file-manager {
+  padding: 2rem;
+
+  .upload-section, .files-section {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+  }
+
+  .upload-section {
+    .upload-area {
+      border: 2px dashed $border-color;
+      border-radius: 8px;
+      padding: 2rem;
+      text-align: center;
+      transition: all 0.3s;
+      
+      &.dragover {
+        border-color: $primary-color;
+        background: rgba($primary-color, 0.05);
+      }
+      
+      .upload-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .upload-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-size: 1rem;
+        
+        &.files-btn {
+          background: $primary-color;
+          color: white;
+          
+          &:hover {
+            background: color.adjust($primary-color, $lightness: -10%);
+          }
+        }
+        
+        &.folder-btn {
+          background: white;
+          color: $primary-color;
+          border: 1px solid $primary-color;
+          
+          &:hover {
+            background: rgba($primary-color, 0.05);
+          }
+        }
+        
+        i {
+          font-size: 1.2em;
+        }
+      }
+
+      .upload-tips {
+        color: $text-color;
+        opacity: 0.7;
+        margin-top: 1rem;
+      }
+
+      .progress {
+        margin-top: 1rem;
+        background: #f0f0f0;
+        border-radius: 4px;
+        height: 4px;
+        overflow: hidden;
+        position: relative;
+        
+        .progress-bar {
+          background: $primary-color;
+          height: 100%;
+          width: 0;
+          transition: width 0.3s;
+        }
+        
+        .progress-text {
+          position: absolute;
+          width: 100%;
+          text-align: center;
+          font-size: 0.875rem;
+          color: $primary-color;
+          top: calc(100% + 0.5rem);
+        }
+      }
+    }
+  }
+
+  .progress {
+    margin-top: 1rem;
+    height: 20px;
+    background: #f0f0f0;
+    border-radius: 10px;
+    overflow: hidden;
+
+    .progress-bar {
+      height: 100%;
+      background: $primary-color;
+      width: 0;
+      transition: width 0.3s;
+    }
+  }
+
+  .files-table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th, td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid $border-color;
+    }
+
+    th {
+      font-weight: 500;
+      color: $text-color;
+    }
+
+    .actions {
+      a, button {
+        color: $primary-color;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0.25rem 0.5rem;
+        font-size: inherit;
+        
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}

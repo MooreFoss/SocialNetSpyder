@@ -1,1 +1,144 @@
 extends ../layout
+
+block content
+  h2 页面管理
+  .page-management
+    .create-page-section
+      h3 创建新页面
+      form#createPageForm.management-form
+        .form-group
+          label(for="title") 页面标题
+          input#title(type="text" name="title" required)
+        
+        .form-group
+          label(for="type") 页面类型
+          select#type(name="type" required)
+            option(value="static") 静态网页
+            option(value="link") 外部链接
+        
+        .form-group#urlGroup(style="display: none;")
+          label(for="url") 外部链接
+          input#url(type="url" name="url" placeholder="https://")
+        
+        button(type="submit") 创建页面
+
+    .page-list-section
+      h3 页面列表
+      table.page-table
+        thead
+          tr
+            th 标题
+            th ID
+            th 类型
+            th 创建时间
+            th 状态
+            th 操作
+        tbody#pageList
+
+block pageScripts
+  script.
+    $(document).ready(function() {
+      // 根据页面类型切换表单
+      $('#type').change(function() {
+        if ($(this).val() === 'link') {
+          $('#urlGroup').show();
+        } else {
+          $('#urlGroup').hide();
+        }
+      });
+
+      // 创建页面
+      $('#createPageForm').submit(function(e) {
+        e.preventDefault();
+        const formData = {
+          title: $('#title').val(),
+          type: $('#type').val(),
+          content: $('#type').val() === 'link' ? $('#url').val() : ''
+        };
+
+        $.ajax({
+          type: 'POST',
+          url: '/manage/tasks/create',
+          data: formData,
+          success: function(response) {
+            alert('创建成功');
+            loadPages();
+            $('#createPageForm')[0].reset();
+          },
+          error: function(xhr) {
+            alert(xhr.responseJSON.msg || '创建失败');
+          }
+        });
+      });
+
+      // 加载页面列表
+      function loadPages() {
+        $.get('/manage/tasks/pages', function(pages) {
+          const tbody = $('#pageList');
+          tbody.empty();
+          
+          pages.forEach(page => {
+            const tr = $('<tr>');
+            tr.append(`<td>${page.title}</td>`);
+            tr.append(`<td>${page.pageId}</td>`);
+            tr.append(`<td>${page.type === 'static' ? '静态网页' : '外部链接'}</td>`);
+            tr.append(`<td>${new Date(page.creationTime).toLocaleString()}</td>`);
+            tr.append(`<td>${page.status ? '启用' : '禁用'}</td>`);
+            
+            const actions = $('<td class="actions">');
+            actions.append(`<a href="/p/${page.pageId}" target="_blank">访问</a>`);
+            
+            if (page.type === 'static') {
+              actions.append(` | <a href="/manage/tasks/files/${page.pageId}">管理文件</a>`);
+            }
+            
+            actions.append(
+              ` | <button onclick="togglePageStatus('${page.pageId}', ${!page.status})">
+                ${page.status ? '禁用' : '启用'}
+              </button> | `
+            );
+            actions.append(
+              `<button class="delete-btn" onclick="deletePage('${page.pageId}')">删除</button>`
+            );
+            
+            tr.append(actions);
+            tbody.append(tr);
+          });
+        });
+      }
+
+      // 切换页面状态
+      window.togglePageStatus = function(pageId, status) {
+        $.ajax({
+          type: 'POST',
+          url: '/manage/tasks/toggle',
+          data: { pageId, status },
+          success: function() {
+            loadPages();
+          },
+          error: function(xhr) {
+            alert('操作失败');
+          }
+        });
+      }
+
+      // 添加删除页面函数
+      window.deletePage = function(pageId) {
+        if (confirm('确定要删除此页面吗？此操作不可恢复！')) {
+          $.ajax({
+            type: 'POST',
+            url: '/manage/tasks/delete',
+            data: { pageId },
+            success: function() {
+              loadPages();
+            },
+            error: function(xhr) {
+              alert('删除失败');
+            }
+          });
+        }
+      }
+
+      // 初始加载页面列表
+      loadPages();
+    });

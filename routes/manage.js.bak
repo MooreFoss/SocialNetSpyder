@@ -1,0 +1,233 @@
+const express = require('express');
+const router = express.Router();
+const authMiddleware = require('../middleware/authMiddleware');
+const User = require('../models/user');
+const Page = require('../models/page');
+const fs = require('fs-extra');
+const path = require('path');
+const multer = require('multer');
+
+router.use(authMiddleware, async (req, res, next) => {
+    try {
+        const user = await User.findById(req.user.userId);
+        res.locals.user = user;
+        next();
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+    }
+});
+
+router.get('/', (req, res) => {
+    res.redirect('/manage/dashboard');
+});
+
+router.get('/dashboard', (req, res) => {
+    res.render('manage/pages/dashboard', {
+        currentPage: 'dashboard',
+        username: res.locals.user.username,
+        uuid: res.locals.user.userId,
+    });
+});
+
+router.get('/tasks', (req, res) => {
+    res.render('manage/pages/tasks', {
+        currentPage: 'tasks',
+        username: res.locals.user.username
+    });
+});
+
+router.get('/data', (req, res) => {
+    res.render('manage/pages/data', {
+        currentPage: 'data',
+        username: res.locals.user.username
+    });
+});
+
+router.get('/settings', (req, res) => {
+    res.render('manage/pages/settings', {
+        currentPage: 'settings',
+        username: res.locals.user.username
+    });
+});
+
+// 创建新页面
+router.post('/tasks/create', async (req, res) => {
+    try {
+        const { title, type, content } = req.body;
+        const userId = res.locals.user.userId;
+
+        const page = new Page({
+            title,
+            type,
+            content,
+            userId
+        });
+
+        await page.save();
+
+        if (type === 'static') {
+            // 创建页面目录
+            const dir = path.join(__dirname, `../data/${userId}/${page.pageId}`);
+            await fs.ensureDir(dir);
+        }
+
+        res.status(201).json(page);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ msg: '创建失败' });
+    }
+});
+
+// 获取页面列表
+router.get('/tasks/pages', async (req, res) => {
+    try {
+        const pages = await Page.find({ userId: res.locals.user.userId });
+        res.json(pages);
+    } catch (err) {
+        res.status(500).json({ msg: '获取失败' });
+    }
+});
+
+// 切换页面状态
+router.post('/tasks/toggle', async (req, res) => {
+    try {
+        const { pageId, status } = req.body;
+        await Page.findOneAndUpdate(
+            { pageId, userId: res.locals.user.userId },
+            { status }
+        );
+        res.sendStatus(200);
+    } catch (err) {
+        res.status(500).json({ msg: '操作失败' });
+    }
+});
+
+// 配置文件上传
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    // 使用req.user获取用户信息
+    if (!req.user) {
+      return cb(new Error('未授权'));
+    }
+    
+    const dir = path.join(__dirname, '../data', req.user.userId, req.params.pageId);
+    fs.ensureDir(dir)
+      .then(() => cb(null, dir))
+      .catch(err => cb(err));
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  }
+});
+
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 50 * 1024 * 1024
+  }
+});
+
+// 文件管理页面
+router.get('/tasks/files/:pageId', async (req, res) => {
+    try {
+        const page = await Page.findOne({
+            pageId: req.params.pageId,
+            userId: res.locals.user.userId
+        });
+
+        if (!page || page.type !== 'static') {
+            return res.status(404).render('404');
+        }
+
+        // 确保传递必要的变量到模板
+        res.render('manage/pages/files', {
+            page,
+            pageId: page.pageId,
+            userId: res.locals.user.userId
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+    }
+});
+
+// 文件上传路由
+router.post('/tasks/files/:pageId/upload', async (req, res) => {
+  try {
+    // 先验证页面权限
+    const page = await Page.findOne({
+      pageId: req.params.pageId,
+      userId: req.user.userId
+    });
+
+    if (!page || page.type !== 'static') {
+      return res.status(403).json({ error: '无权限上传文件' });
+    }
+
+    // 使用multer中间件处理上传
+    const uploadMiddleware = upload.array('files');
+    
+    uploadMiddleware(req, res, function(err) {
+      if (err instanceof multer.MulterError) {
+        if (err.code === 'LIMIT_FILE_SIZE') {
+          return res.status(400).json({ error: '文件大小超出限制' });
+        }
+        return res.status(400).json({ error: err.message });
+      } else if (err) {
+        console.error('File upload error:', err);
+        return res.status(500).json({ error: '文件上传失败' });
+      }
+
+      res.json({
+        success: true,
+        message: '文件上传成功'
+      });
+    });
+
+  } catch (err) {
+    console.error('Upload handler error:', err);
+    res.status(500).json({ error: '服务器错误' });
+  }
+});
+
+// 获取文件列表路由
+router.get('/tasks/files/:pageId/list', async (req, res) => {
+    try {
+        const dir = path.join(__dirname, '../data', res.locals.user.userId, req.params.pageId);
+        await fs.ensureDir(dir); // 确保目录存在
+
+        const files = await fs.readdir(dir);
+        const fileStats = await Promise.all(
+            files.map(async file => {
+                const stats = await fs.stat(path.join(dir, file));
+                return {
+                    name: file,
+                    size: stats.size,
+                    mtime: stats.mtime
+                };
+            })
+        );
+
+        res.json(fileStats);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: '获取文件列表失败' });
+    }
+});
+
+// 删除文件
+router.post('/tasks/files/:pageId/delete', async (req, res) => {
+    try {
+        const filePath = path.join(
+            __dirname,
+            `../data/${res.locals.user.userId}/${req.params.pageId}/${req.body.filename}`
+        );
+        await fs.remove(filePath);
+        res.json({ success: true });
+    } catch (err) {
+        res.status(500).json({ error: '删除失败' });
+    }
+});
+
+module.exports = router;

@@ -1,0 +1,93 @@
+@use "sass:color";
+.page-management {
+  padding: 2rem;
+
+  .create-page-section {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+
+    h3 {
+      margin-bottom: 1.5rem;
+      color: $primary-color;
+    }
+  }
+
+  .management-form {
+    .form-group {
+      margin-bottom: 1rem;
+
+      label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+      }
+
+      input, select {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid $border-color;
+        border-radius: 4px;
+        font-size: 1rem;
+
+        &:focus {
+          outline: none;
+          border-color: $primary-color;
+        }
+      }
+    }
+
+    button {
+      background: $primary-color;
+      color: #fff;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.3s;
+
+      &:hover {
+        background: color.adjust($primary-color, $lightness: -10%);
+      }
+    }
+  }
+
+  .page-table {
+    width: 100%;
+    background: #fff;
+    border-radius: 8px;
+    border-collapse: collapse;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+
+    th, td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid $border-color;
+    }
+
+    th {
+      background: #f8f9fa;
+      font-weight: 500;
+    }
+
+    .actions {
+      a, button {
+        color: $primary-color;
+        text-decoration: none;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0.25rem 0.5rem;
+        font-size: inherit; // 继承表格的字体大小
+        font-family: inherit; // 继承表格的字体
+        vertical-align: middle; // 垂直对齐
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}

@@ -3,6 +3,8 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const authMiddleware = require('../middleware/authMiddleware');
 const jwt = require('jsonwebtoken');
+const path = require('path');
+const Page = require('../models/page');
 
 // 添加检查登录状态的函数
 const checkLoginStatus = (req) => {
@@ -34,6 +36,36 @@ router.get('/', (req, res) => {
     title: 'SocialNetSpyder',
     isLoggedIn: isLoggedIn
   });
+});
+
+// 添加动态页面路由
+router.get('/p/:pageId', async (req, res) => {
+  try {
+    const page = await Page.findOne({ 
+      pageId: req.params.pageId,
+      status: true // 只处理启用状态的页面
+    });
+
+    if (!page) {
+      return res.status(404).render('404');
+    }
+
+    if (page.type === 'link') {
+      // 外部链接直接重定向
+      return res.redirect(page.content);
+    } else {
+      // 静态页面返回index.html
+      const filePath = path.join(__dirname, `../data/${page.userId}/${page.pageId}/index.html`);
+      res.sendFile(filePath, err => {
+        if (err) {
+          res.status(404).render('404');
+        }
+      });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server Error');
+  }
 });
 
 module.exports = router;

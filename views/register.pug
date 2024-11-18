@@ -1,0 +1,47 @@
+doctype html
+html(lang="zh")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title 注册
+    link(rel="stylesheet" href="/stylesheets/register.css")
+    script(src="/javascripts/jquery-3.6.0.min.js")
+  body
+    main
+      h2 注册
+      form#registerForm(action="/register", method="post")
+        label(for="username") 用户名:
+        input#username(type="text" name="username" required)
+        label(for="password") 密码:
+        input#password(type="password" name="password" required)
+        label(for="confirmPassword") 确认密码:
+        input#confirmPassword(type="password" name="confirmPassword" required)
+        button(type="submit") 注册
+        p.login-link
+            | 已有账号？
+            a(href="/login") 去登录
+    
+    script.
+      $(document).ready(function() {
+        $('#registerForm').submit(function(event) {
+          event.preventDefault();
+          const formData = {
+            username: $('#username').val(),
+            password: $('#password').val(),
+            confirmPassword: $('#confirmPassword').val()
+          };
+          
+          $.ajax({
+            type: 'POST',
+            url: '/register',
+            data: formData,
+            success: function(response) {
+              alert('注册成功');
+              window.location.href = '/login';
+            },
+            error: function(xhr) {
+              $('#error-message').text(xhr.responseJSON.msg).show();
+            }
+          });
+        });
+      });

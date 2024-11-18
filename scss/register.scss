@@ -1,0 +1,17 @@
+@import 'login';
+
+.login-link {
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  color: $text-color;
+  
+  a {
+    color: $primary-color;
+    text-decoration: none;
+    margin-left: 0.3rem;
+    
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

@@ -1,0 +1,160 @@
+extends ../layout
+
+block content
+  h2 文件管理 - #{page.title}
+  .file-manager
+    .upload-section
+      h3 上传文件
+      .upload-area
+        .upload-buttons
+          label.upload-btn.files-btn(for="fileInput")
+            i.fas.fa-file-upload
+            span 选择文件
+          label.upload-btn.folder-btn(for="folderInput")
+            i.fas.fa-folder-plus
+            span 选择文件夹
+        .upload-tips 或将文件拖放到此处
+        form#uploadForm(enctype="multipart/form-data")
+          input#fileInput(type="file" multiple hidden)
+          input#folderInput(type="file" webkitdirectory directory multiple hidden)
+          .progress(style="display: none;")
+            .progress-bar(role="progressbar")
+            .progress-text 0%
+
+    .files-section
+      h3 文件列表
+      table.files-table
+        thead
+          tr
+            th 文件名
+            th 大小
+            th 修改时间
+            th 操作
+        tbody#filesList
+
+block pageScripts
+  script.
+    // 添加必要的变量到客户端
+    const pageId = '#{pageId}';
+    const userId = '#{userId}';
+
+    $(document).ready(function() {
+      const uploadArea = $('.upload-area');
+      
+      // 拖拽上传
+      uploadArea.on('dragover', function(e) {
+        e.preventDefault();
+        $(this).addClass('dragover');
+      });
+      
+      uploadArea.on('dragleave', function(e) {
+        e.preventDefault();
+        $(this).removeClass('dragover');
+      });
+      
+      uploadArea.on('drop', function(e) {
+        e.preventDefault();
+        $(this).removeClass('dragover');
+        const items = e.originalEvent.dataTransfer.items;
+        handleFiles(items);
+      });
+      
+      // 文件选择处理
+      $('#fileInput, #folderInput').change(function() {
+        handleFiles(this.files);
+      });
+      
+      // 处理文件上传
+      function handleFiles(files) {
+        const formData = new FormData();
+        for(let i = 0; i < files.length; i++) {
+          formData.append('files', files[i]);
+        }
+        
+        uploadFiles(formData);
+      }
+      
+      function uploadFiles(formData) {
+        $.ajax({
+          url: `/manage/tasks/files/${pageId}/upload`,
+          type: 'POST',
+          data: formData,
+          processData: false,
+          contentType: false,
+          xhr: function() {
+            const xhr = new window.XMLHttpRequest();
+            xhr.upload.addEventListener('progress', function(e) {
+              if (e.lengthComputable) {
+                const percent = Math.round((e.loaded / e.total) * 100);
+                $('.progress').show();
+                $('.progress-bar').width(percent + '%');
+                $('.progress-text').text(percent + '%');
+              }
+            });
+            return xhr;
+          },
+          success: function(response) {
+            if(response.success) {
+              loadFiles();
+              $('#fileInput, #folderInput').val('');
+              $('.progress').hide();
+            }
+          },
+          error: function(xhr) {
+            const errorMsg = xhr.responseJSON?.error || '上传失败';
+            alert(errorMsg);
+            $('.progress').hide();
+          }
+        });
+      }
+
+      // 加载文件列表
+      function loadFiles() {
+        $.get(`/manage/tasks/files/${pageId}/list`, function(files) {
+          const tbody = $('#filesList');
+          tbody.empty();
+          
+          files.forEach(file => {
+            const tr = $('<tr>');
+            tr.append(`<td>${file.name}</td>`);
+            tr.append(`<td>${formatSize(file.size)}</td>`);
+            tr.append(`<td>${new Date(file.mtime).toLocaleString()}</td>`);
+            tr.append(`
+              <td class="actions">
+                <a href="/data/${userId}/${pageId}/${file.name}" target="_blank">查看</a> |
+                <button onclick="deleteFile('${file.name}')">删除</button>
+              </td>
+            `);
+            tbody.append(tr);
+          });
+        });
+      }
+
+      // 格式化文件大小
+      function formatSize(bytes) {
+        if (bytes === 0) return '0 B';
+        const k = 1024;
+        const sizes = ['B', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+      }
+
+      // 删除文件
+      window.deleteFile = function(filename) {
+        if (confirm('确定要删除此文件吗？')) {
+          $.ajax({
+            url: `/manage/tasks/files/${pageId}/delete`,
+            type: 'POST',
+            data: { filename },
+            success: function() {
+              loadFiles();
+            },
+            error: function() {
+              alert('删除失败');
+            }
+          });
+        }
+      }
+
+      loadFiles();
+    });
