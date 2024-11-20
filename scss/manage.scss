@@ -2,7 +2,11 @@
 $primary-color: #1a73e8;
 $secondary-color: #f8f9fa;
 $text-color: #333;
+$text-primary: #333;
+$text-secondary: #666;
 $border-color: #e0e0e0;
+$bg-light: #f8f9fa;
+$error-color: #dc3545;
 $shadow-color: rgba(0, 0, 0, 0.1);
 $sidebar-width: 250px;
 $top-bar-height: 60px;
@@ -12,6 +16,7 @@ $transition-time: 0.3s;
 @import 'pages/tasks';
 @import 'pages/files';
 @import 'pages/share';
+@import 'pages/data';
 
 // Mixins
 @mixin flex-center {

@@ -1,0 +1,232 @@
+@use "sass:color";
+.data-analysis {
+  padding: 2rem;
+  
+  h2 {
+    margin-bottom: 2rem;
+    color: $text-primary;
+  }
+
+  // 分享列表样式
+  .share-list {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    padding: 1.5rem;
+
+    h3 {
+      color: $text-primary;
+      margin-bottom: 1.5rem;
+    }
+    .share-list {
+  table {
+    .no-data, .error-msg {
+      text-align: center;
+      padding: 2rem;
+      color: $text-secondary;
+      
+      i {
+        margin-right: 0.5rem;
+      }
+    }
+    
+    .error-msg {
+      color: $error-color;
+    }
+
+    .btn-sm {
+      padding: 0.25rem 0.5rem;
+      font-size: 0.875rem;
+      
+      i {
+        margin-right: 0.25rem;
+      }
+    }
+  }
+}
+
+    #shareTable {
+      width: 100%;
+      border-collapse: collapse;
+      
+      th, td {
+        padding: 1rem;
+        text-align: left;
+        border-bottom: 1px solid $border-color;
+      }
+      
+      th {
+        background: $bg-light;
+        font-weight: 500;
+      }
+
+      .btn-primary {
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 4px;
+        background: $primary-color;
+        color: white;
+        cursor: pointer;
+        transition: all 0.2s;
+
+        &:hover {
+          background: color.adjust($primary-color, $lightness: -10%);
+        }
+      }
+    }
+  }
+
+  // 可视化区域样式
+  .visualization-area {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    padding: 2rem;
+    position: relative;
+    min-height: 600px;
+
+    .analytics-header {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 2rem;
+      min-height: 40px;
+      
+      #backToList {
+        position: static; // 改为静态定位
+        margin-right: 2rem;
+        padding: 0.5rem 1rem;
+        background: $secondary-color;
+        border: none;
+        border-radius: 4px;
+        color: $text-primary;
+        cursor: pointer;
+        transition: all 0.2s;
+        
+        i {
+          margin-right: 0.5rem;
+        }
+        
+        &:hover {
+          background: color.adjust($primary-color, $lightness: -5%);
+        }
+      }
+      
+      .stats-panel {
+        flex: 1;
+        display: flex;
+        gap: 2rem;
+        flex-wrap: wrap;
+        
+        .stat-item {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          
+          .stat-label {
+            font-size: 0.9rem;
+            color: $text-secondary;
+            margin-bottom: 0.25rem;
+          }
+          
+          .stat-value {
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: $text-primary;
+          }
+        }
+      }
+    }
+
+    #backToList {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      padding: 0.5rem 1rem;
+      background: $secondary-color;
+      border: none;
+      border-radius: 4px;
+      color: white;
+      cursor: pointer;
+      transition: all 0.2s;
+      
+      &:hover {
+        background: color.adjust($primary-color, $lightness: -10%);
+      }
+
+      i {
+        margin-right: 0.5rem;
+      }
+    }
+
+    #share-tree {
+      .link {
+        fill: none;
+        stroke: #ccc;
+        stroke-width: 2px;
+        transition: all 0.3s;
+
+        &:hover {
+          stroke: $primary-color;
+          stroke-width: 3px;
+        }
+      }
+
+      .node {
+        cursor: pointer;
+
+        circle {
+          fill: white;
+          stroke: $primary-color;
+          stroke-width: 2px;
+          transition: all 0.3s;
+        }
+
+        text {
+          font-size: 12px;
+          fill: $text-primary;
+        }
+
+        &:hover {
+          circle {
+            fill: $primary-color;
+          }
+          
+          text {
+            font-weight: bold;
+          }
+        }
+      }
+    }
+
+    #share-metrics {
+      margin-top: 2rem;
+      padding: 1rem;
+      border-top: 1px solid $border-color;
+    }
+  }
+}
+
+// _data.scss 添加提示框样式
+.tooltip {
+  position: absolute;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 4px;
+  font-size: 12px;
+  pointer-events: none;
+  z-index: 1000;
+  max-width: 300px;
+  white-space: pre-line;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
+  }
+}

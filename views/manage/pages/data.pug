@@ -3,10 +3,226 @@ extends ../layout
 block content
   h2 数据分析
   .data-analysis
-    p 数据分析功能开发中...
+    .share-list
+      h3 分享链接列表
+      table#shareTable
+        thead
+          tr
+            th 页面标题
+            th 链接ID
+            th 访问量
+            th 创建时间
+            th 操作
+        tbody
+    .visualization-area(style="display: none;")
+      .analytics-header
+        button#backToList.btn
+          i.fas.fa-arrow-left
+          span 返回列表
+        #statistics.stats-panel
+      .visualization-content  
+        #share-tree
+        #share-metrics
 
 block pageScripts
+  script(src="https://d3js.org/d3.v7.min.js")
   script.
+    function showVisualization(linkId) {
+      $.get(`/manage/data/shareAnalytics/${linkId}`, function(response) {
+        // 添加数据检查
+        console.log('返回的树形数据:', response.tree);
+        
+        $('.share-list').hide();
+        $('.visualization-area').show();
+        
+        if (!response.tree || !response.tree.children || response.tree.children.length === 0) {
+          $('#share-tree').html(`
+            <div class="no-data">
+              <i class="fas fa-info-circle"></i>
+              暂无传播数据
+            </div>
+          `);
+          return;
+        }
+        
+        // 渲染统计信息
+        renderStats(response.stats);
+        
+        // 渲染树形图
+        renderShareTree(response.tree);
+      }).fail(function(xhr) {
+        console.error('获取传播数据失败:', xhr);
+        alert('获取传播数据失败，请重试');
+      });
+    }
+
+    function renderStats(stats) {
+      const statsHtml = `
+        <div class="stat-item">
+          <span class="stat-label">总访问量</span>
+          <span class="stat-value">${stats.totalVisits}</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">独立访客</span>
+          <span class="stat-value">${stats.uniqueVisitors}</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">最大传播深度</span>
+          <span class="stat-value">${stats.maxDepth}</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">传播时间</span>
+          <span class="stat-value">${formatTimeRange(stats.startTime, stats.endTime)}</span>
+        </div>
+      `;
+      $('#statistics').html(statsHtml);
+    }
+
+    function formatTimeRange(start, end) {
+      if (!start || !end) return '暂无数据';
+      const startDate = new Date(start);
+      const endDate = new Date(end);
+      return `${startDate.toLocaleDateString()} - ${endDate.toLocaleDateString()}`;
+    }
+
+    function renderShareTree(data) {
+      console.log('开始渲染树形图，节点数据:', data);
+      
+      const margin = {top: 50, right: 50, bottom: 50, left: 50};
+      const width = 960 - margin.left - margin.right;
+      const height = 600 - margin.top - margin.bottom;
+      
+      // 清空现有内容
+      d3.select("#share-tree").select("svg").remove();
+      
+      const svg = d3.select("#share-tree")
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", `translate(${margin.left},${margin.top})`);
+
+      // 创建层次结构
+      const root = d3.hierarchy(data, d => d.children);
+      console.log('层次结构:', root);
+      
+      // 计算节点位置
+      const tree = d3.tree().size([width, height]);
+      tree(root);
+      
+      // 添加连线
+      svg.selectAll("path.link")
+        .data(root.links())
+        .enter()
+        .append("path")
+        .attr("class", "link")
+        .attr("d", d3.linkVertical()
+          .x(d => d.x)
+          .y(d => d.y));
+
+      // 添加节点组
+      const node = svg.selectAll("g.node")
+        .data(root.descendants())
+        .enter()
+        .append("g")
+        .attr("class", "node")
+        .attr("transform", d => `translate(${d.x},${d.y})`);
+
+      // 添加节点圆圈
+      node.append("circle")
+        .attr("r", d => {
+          const size = d.data.visitCount || 1;
+          return Math.max(5, Math.log2(size + 1) * 5);
+        });
+
+      // 添加节点文本
+      node.append("text")
+        .attr("dy", "0.31em")
+        .attr("x", d => d.children ? -8 : 8)
+        .style("text-anchor", d => d.children ? "end" : "start")
+        .text(d => d.data.id === 'root' ? 'Root' : d.data.guestId.substring(0, 8));
+        
+      // 添加交互提示
+      const tooltip = d3.select("#share-tree")
+        .append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
+
+      node.on("mouseover", function(event, d) {
+          tooltip.transition()
+            .duration(200)
+            .style("opacity", 1);
+            
+          let content = d.data.id === 'root' 
+            ? `<strong>根节点</strong><br/>总访问: ${d.data.visitCount || 0}`
+            : `<strong>访客信息</strong><br/>
+               ID: ${d.data.guestId}<br/>
+               IP: ${d.data.ipAddress || '未知'}<br/>
+               时间: ${d.data.timestamp ? new Date(d.data.timestamp).toLocaleString() : '未知'}<br/>
+               浏览器: ${d.data.userAgent || '未知'}`;
+               
+          tooltip.html(content)
+            .style("left", (event.pageX + 10) + "px")
+            .style("top", (event.pageY - 28) + "px");
+        })
+        .on("mouseout", function() {
+          tooltip.transition()
+            .duration(500)
+            .style("opacity", 0);
+        });
+    }
+
+    function loadShareLinks() {
+      $.get('/manage/share/all', function(shares) {
+        const tbody = $('#shareTable tbody');
+        tbody.empty();
+        
+        if (!shares || shares.length === 0) {
+          tbody.append(`
+            <tr>
+              <td colspan="5" class="no-data">
+                <i class="fas fa-info-circle"></i>
+                暂无分享数据
+              </td>
+            </tr>
+          `);
+          return;
+        }
+        
+        shares.forEach(share => {
+          const tr = $('<tr>');
+          tr.append(`<td>${share.pageTitle || '未命名页面'}</td>`);
+          tr.append(`<td>${share.linkId}</td>`);
+          tr.append(`<td>${share.visitCount || 0}</td>`);
+          tr.append(`<td>${new Date(share.createdAt).toLocaleString()}</td>`);
+          
+          const viewBtn = $('<button>')
+            .addClass('btn btn-primary btn-sm')
+            .html('<i class="fas fa-chart-network"></i> 查看传播')
+            .click(() => showVisualization(share.linkId));
+            
+          tr.append($('<td>').append(viewBtn));
+          tbody.append(tr);
+        });
+      }).fail(function(xhr) {
+        console.error('加载分享链接失败:', xhr);
+        const tbody = $('#shareTable tbody');
+        tbody.html(`
+          <tr>
+            <td colspan="5" class="error-msg">
+              <i class="fas fa-exclamation-circle"></i>
+              加载失败，请刷新重试
+            </td>
+          </tr>
+        `);
+      });
+    }
+
     $(document).ready(function() {
-      // 数据分析相关脚本
+      loadShareLinks();
+      
+      $('#backToList').click(() => {
+        $('.visualization-area').hide();
+        $('.share-list').show();
+      });
     });
