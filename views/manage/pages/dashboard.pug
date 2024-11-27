@@ -10,24 +10,37 @@ block content
         i.fas.fa-user
         span 用户信息
       .widget-content
-        p
+        p.user-info
           span.label 用户名：
           span.value #{username}
-        p
+        p.user-info
           span.label UUID：
           span.value #{uuid}
-    .widget.time-widget
+    .widget.stats-widget
       h3
-        i.fas.fa-clock
-        span 系统时间
+        i.fas.fa-share-alt
+        span 统计信息
       .widget-content
-        p#dashboard-time
+        .stats-grid
+          .stats-number
+            span.stats-label 分享链接总数
+            span.stats-value#totalLinks 0
+          .stats-number
+            span.stats-label 页面总数  
+            span.stats-value#totalPages 0
 
 block pageScripts
   script.
-    function updateTime() {
-      const now = new Date();
-      document.getElementById('dashboard-time').innerText = now.toLocaleString('zh-CN');
+    async function updateStats() {
+      try {
+        const response = await fetch('/manage/data/dashboard-stats');
+        const data = await response.json();
+        document.getElementById('totalLinks').textContent = data.linkCount;
+        document.getElementById('totalPages').textContent = data.pageCount;
+      } catch (err) {
+        console.error('更新统计数据失败:', err);
+      }
     }
-    setInterval(updateTime, 1000);
-    updateTime();
+
+    updateStats();
+    setInterval(updateStats, 5 * 60 * 1000);

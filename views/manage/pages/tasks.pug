@@ -116,10 +116,10 @@ block pageScripts
             tr.append(`<td>${page.status ? '启用' : '禁用'}</td>`);
             
             const actions = $('<td class="actions">');
-            actions.append(`<a href="/p/${page.pageId}" target="_blank">访问</a>`);
+            actions.append(`<button onclick="window.open('/p/${page.pageId}', '_blank')">访问</button>`);
             
             if (page.type === 'static') {
-              actions.append(` | <a href="/manage/tasks/files/${page.pageId}">管理文件</a>`);
+              actions.append(` | <button onclick="window.location.href='/manage/tasks/files/${page.pageId}'">管理文件</button>`);
             }
             
             actions.append(

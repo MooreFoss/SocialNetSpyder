@@ -1,4 +1,6 @@
 @use "sass:color";
+@use 'list' as list;
+
 .page-management {
   padding: 2rem;
 
@@ -114,40 +116,7 @@
   }
 
   .page-table {
-    width: 100%;
-    background: #fff;
-    border-radius: 8px;
-    border-collapse: collapse;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-
-    th, td {
-      padding: 1rem;
-      text-align: left;
-      border-bottom: 1px solid $border-color;
-    }
-
-    th {
-      background: #f8f9fa;
-      font-weight: 500;
-    }
-
-    .actions {
-      a, button {
-        color: $primary-color;
-        text-decoration: none;
-        background: none;
-        border: none;
-        cursor: pointer;
-        padding: 0.25rem 0.5rem;
-        font-size: inherit; // 继承表格的字体大小
-        font-family: inherit; // 继承表格的字体
-        vertical-align: middle; // 垂直对齐
-
-        &:hover {
-          text-decoration: underline;
-        }
-      }
-    }
+    @include list.common-list;
   }
 
   // 新建页面按钮样式

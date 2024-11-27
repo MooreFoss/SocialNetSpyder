@@ -116,7 +116,12 @@ router.post('/delete', async (req, res) => {
             return res.status(403).json({ error: '无权限删除此链接' });
         }
 
-        await Link.findOneAndDelete({ linkId });
+        // 删除链接和相关的访问记录
+        await Promise.all([
+            Link.findOneAndDelete({ linkId }),
+            Visit.deleteMany({ linkId }) // 添加这行
+        ]);
+
         res.sendStatus(200);
     } catch (err) {
         res.status(500).json({ error: '删除失败' });

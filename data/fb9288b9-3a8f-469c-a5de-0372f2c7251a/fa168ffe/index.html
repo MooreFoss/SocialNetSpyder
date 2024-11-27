@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            text-align: center;
+            background: #ffffff;
+            padding: 20px 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            font-size: 2rem;
+            color: #0078D7;
+        }
+        p {
+            font-size: 1.2rem;
+            margin-top: 10px;
+            color: #555;
+            word-break: break-all;
+        }
+        footer {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>当前Url为</h1>
+        <h2 id="url-display">Loading...</h2>
+        <footer>©SocialNetSpyder</footer>
+    </div>
+    <script>
+        // 获取当前页面的 URL
+        const currentUrl = window.location.href;
+        // 在页面中显示 URL
+        document.getElementById('url-display').textContent = `${currentUrl}`;
+    </script>
+</body>
+</html>

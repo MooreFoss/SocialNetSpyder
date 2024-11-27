@@ -98,4 +98,21 @@ router.get('/shareAnalytics/:linkId', async (req, res) => {
   }
 });
 
+// routes/manage/data.js - 添加新的API端点
+router.get('/dashboard-stats', async (req, res) => {
+  try {
+    const [linkCount, pageCount] = await Promise.all([
+      Link.countDocuments(),
+      Page.countDocuments({ userId: res.locals.user.userId })
+    ]);
+    
+    res.json({
+      linkCount,
+      pageCount
+    });
+  } catch (err) {
+    res.status(500).json({ error: '获取统计数据失败' });
+  }
+});
+
 module.exports = router;
