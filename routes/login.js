@@ -25,7 +25,7 @@ router.post('/', async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (isMatch) {
       const payload = { userId: user.userId };
-      const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
+      const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1d' });
       res.cookie('token', token, { httpOnly: true });
       return res.status(200).json({ msg: '登录成功' });
     } else {
