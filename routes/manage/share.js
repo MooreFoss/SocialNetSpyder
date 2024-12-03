@@ -178,7 +178,32 @@ router.get('/:pageId/list', async (req, res) => {
         const links = await Link.find({ pageId: req.params.pageId });
         res.json(links);
     } catch (err) {
-        res.status(500).json({ error: '获取分享链接列表失��' });
+        res.status(500).json({ error: '获取分享链接列表失败' });
+    }
+});
+
+function getClientIP(req) {
+    // 按优先级尝试获取真实 IP
+    return req.headers['x-real-ip'] ||
+        req.headers['x-forwarded-for']?.split(',')[0] ||
+        req.connection.remoteAddress ||
+        req.socket.remoteAddress ||
+        req.ip;
+}
+
+router.get('/:linkId', async (req, res) => {
+    try {
+        // ...
+        if (isNewVisitor) {
+            const guest = new Guest({
+                ipAddress: getClientIP(req), // 使用新的获取 IP 方法
+                browserInfo: req.headers['user-agent']
+            });
+            // ...
+        }
+        // ...
+    } catch (err) {
+        // ...
     }
 });
 
