@@ -117,13 +117,47 @@
   label {
     display: block;
     margin-bottom: 0.5rem;
+    color: #333;
+    font-weight: 500;
   }
 
-  select {
+  // 输入框基础样式
+  input, select {
     width: 100%;
-    padding: 0.5rem;
+    padding: 0.75rem 1rem;
     border: 1px solid $border-color;
     border-radius: 4px;
+    font-size: 0.95rem;
+    color: #333;
+    background: #fff;
+    transition: all 0.3s ease;
+    
+    &::placeholder {
+      color: #999;
+      font-size: 0.9rem;
+    }
+    
+    &:focus {
+      outline: none;
+      border-color: $primary-color;
+      box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
+    }
+    
+    // 悬停效果
+    &:hover {
+      border-color: darken($border-color, 10%);
+    }
+  }
+
+  // 备注输入框特殊样式
+  input#note {
+    background-color: #f9f9f9;
+    border-style: solid;
+    margin-top: 0.25rem;
+    
+    &:focus {
+      background-color: #fff;
+    }
   }
 }
 

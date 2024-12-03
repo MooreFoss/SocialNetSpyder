@@ -22,6 +22,9 @@ block content
               label(for="pageSelect") 选择页面
               select#pageSelect(name="pageId" required)
                 option(value="") 请选择页面...
+            .form-group
+              label(for="note") 备注
+              input#note(type="text" name="note" placeholder="可选备注信息") 
             button(type="submit") 创建分享链接
 
     // 分享链接列表
@@ -33,6 +36,7 @@ block content
             tr
               th 页面标题
               th 链接ID
+              th 备注
               th 创建时间 
               th 状态
               th 访问次数
@@ -80,6 +84,7 @@ block pageScripts
       $('#createShareForm').submit(function(e) {
         e.preventDefault();
         const pageId = $('#pageSelect').val();
+        const note = $('#note').val();
         
         if (!pageId) {
           alert('请选择页面');
@@ -89,11 +94,12 @@ block pageScripts
         $.ajax({
           type: 'POST',
           url: '/manage/share/create',
-          data: { pageId },
+          data: { pageId, note },
           success: function(response) {
             const shareUrl = window.location.origin + response.shareUrl;
             alert(`分享链接创建成功！\n${shareUrl}`);
             modal.css('display', 'none');
+            $('#createShareForm')[0].reset();
             loadShareLinks();
           },
           error: function(xhr) {
@@ -112,6 +118,7 @@ block pageScripts
             const tr = $('<tr>');
             tr.append(`<td>${share.pageTitle}</td>`);
             tr.append(`<td>${share.linkId}</td>`);
+            tr.append(`<td>${share.note || ''}</td>`); // 添加备注列
             tr.append(`<td>${new Date(share.createdAt).toLocaleString()}</td>`);
             tr.append(`<td>${share.isActive ? '启用' : '禁用'}</td>`);
             tr.append(`<td>${share.visitCount || 0}</td>`);

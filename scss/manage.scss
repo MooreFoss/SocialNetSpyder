@@ -69,12 +69,13 @@ body {
       margin: 0;
       
       a {
-        color: inherit;
+        color: #ffffff; // 修改为白色
         text-decoration: none;
         font-size: 1.5rem;
+        transition: color 0.3s ease; // 添加过渡效果
         
         &:hover {
-          color: #3498db;
+          color: #9fd5ff; // 修改为浅蓝色
         }
       }
     }

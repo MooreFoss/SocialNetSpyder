@@ -11,6 +11,7 @@ const linkSchema = new mongoose.Schema({
   creatorGuestId: { type: String },  // 创建者的guestId
   isActive: { type: Boolean, default: true },
   visitCount: { type: Number, default: 0 },
+  note: { type: String }, // 添加备注字段
   createdAt: { type: Date, default: Date.now }
 });
 

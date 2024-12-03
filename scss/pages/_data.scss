@@ -1,208 +1,93 @@
-@use "sass:color";
-@use 'list' as list;
-
 .data-analysis {
   padding: 2rem;
   
   h2 {
     margin-bottom: 2rem;
-    color: $text-primary;
+    color: $primary-color;
   }
-
-  // 分享列表样式
-  .share-list {
-    background: white;
+  
+  .analysis-section {
+    position: relative;  // 添加相对定位
+    background: #fff;
+    padding: 2rem;
     border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    padding: 1.5rem;
-
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    overflow: hidden;  // 防止子元素溢出
+    
     h3 {
-      color: $text-primary;
       margin-bottom: 1.5rem;
     }
-
-    #shareTable {
-      width: 100%;
-      border-collapse: collapse;
-      
-      th, td {
-        padding: 1rem;
-        text-align: left;
-        border-bottom: 1px solid $border-color;
-      }
-      
-      th {
-        background: $bg-light;
-        font-weight: 500;
-      }
-
-      .btn-primary {
-        padding: 0.5rem 1rem;
-        border: none;
-        border-radius: 4px;
-        background: $primary-color;
-        color: white;
-        cursor: pointer;
-        transition: all 0.2s;
-
-        &:hover {
-          background: color.adjust($primary-color, $lightness: -10%);
-        }
-      }
+  }
+  
+  .link-selector {
+    margin-bottom: 2rem;
+    
+    select {
+      min-width: 200px;
+      padding: 0.5rem;
+      border: 1px solid $border-color;
+      border-radius: 4px;
     }
   }
-
-  // 可视化区域样式
-  .visualization-area {
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    padding: 2rem;
-    position: relative;
-    min-height: 600px;
-
-    .analytics-header {
-      display: flex;
-      align-items: flex-start;
-      margin-bottom: 2rem;
-      min-height: 40px;
-      
-      #backToList {
-        position: static; // 改为静态定位
-        margin-right: 2rem;
-        padding: 0.5rem 1rem;
-        background: $secondary-color;
-        border: none;
-        border-radius: 4px;
-        color: $text-primary;
-        cursor: pointer;
-        transition: all 0.2s;
-        
-        i {
-          margin-right: 0.5rem;
-        }
-        
-        &:hover {
-          background: color.adjust($primary-color, $lightness: -5%);
-        }
-      }
-      
-      .stats-panel {
-        flex: 1;
-        display: flex;
-        gap: 2rem;
-        flex-wrap: wrap;
-        
-        .stat-item {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          
-          .stat-label {
-            font-size: 0.9rem;
-            color: $text-secondary;
-            margin-bottom: 0.25rem;
-          }
-          
-          .stat-value {
-            font-size: 1.25rem;
-            font-weight: 500;
-            color: $text-primary;
-          }
-        }
-      }
+  
+  #treeChart {
+    min-height: 200px;
+    max-height: 800px;
+    border: 2px solid #ccc;
+    resize: both;
+    overflow: auto;
+    min-width: 300px;
+    max-width: 100%;  // 限制最大宽度
+    width: 90%;      // 默认宽度设为父容器的90%
+    height: 600px;
+    margin: 10px;
+    
+    .link {
+      fill: none;
+      stroke: #ccc;
+      stroke-width: 1.5px;
     }
-
-    #backToList {
-      position: absolute;
-      top: 1rem;
-      left: 1rem;
-      padding: 0.5rem 1rem;
-      background: $secondary-color;
-      border: none;
-      border-radius: 4px;
-      color: white;
-      cursor: pointer;
-      transition: all 0.2s;
-      
-      &:hover {
-        background: color.adjust($primary-color, $lightness: -10%);
-      }
-
-      i {
-        margin-right: 0.5rem;
-      }
-    }
-
-    #share-tree {
-      .link {
-        fill: none;
-        stroke: #ccc;
-        stroke-width: 2px;
-        transition: all 0.3s;
-
+    
+    .node {
+      circle {
+        fill: white;
+        stroke: #999;
+        stroke-width: 1px;
+        transition: all 0.3s ease;
         &:hover {
-          stroke: $primary-color;
           stroke-width: 3px;
         }
       }
-
-      .node {
-        cursor: pointer;
-
-        circle {
-          fill: white;
-          stroke: $primary-color;
-          stroke-width: 2px;
-          transition: all 0.3s;
-        }
-
-        text {
-          font-size: 12px;
-          fill: $text-primary;
-        }
-
+      
+      text {
+        font-size: 13px;  // 稍微增大字体
+        font-family: Arial, sans-serif;
+        pointer-events: none;  /* 确保文本不会干扰鼠标事件 */
         &:hover {
-          circle {
-            fill: $primary-color;
-          }
-          
-          text {
-            font-weight: bold;
-          }
+          font-weight: bold;
         }
       }
     }
-
-    #share-metrics {
-      margin-top: 2rem;
-      padding: 1rem;
-      border-top: 1px solid $border-color;
+    
+    svg {
+      cursor: grab;
+      &:active {
+        cursor: grabbing;
+      }
     }
   }
 }
 
-// _data.scss 添加提示框样式
+// 在 _data.scss 中添加 tooltip 样式
 .tooltip {
-  position: absolute;
-  padding: 10px;
-  background: rgba(0, 0, 0, 0.8);
-  color: #fff;
+  position: fixed; // 改用fixed定位
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 8px;
   border-radius: 4px;
   font-size: 12px;
   pointer-events: none;
   z-index: 1000;
-  max-width: 300px;
-  white-space: pre-line;
-  
-  &::after {
-    content: '';
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    margin-left: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
-  }
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }

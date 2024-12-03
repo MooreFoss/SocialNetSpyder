@@ -8,6 +8,15 @@ block content
         span 返回
     h2 文件管理 - #{page.title}
   .file-manager
+    .editor-section(style="display: none;")
+      .editor-header
+        button#closeEditor.btn
+          i.fas.fa-times
+          span 关闭
+        button#saveFile.btn
+          i.fas.fa-save 
+          span 保存
+      #monaco-editor(style="width: 100%; height: 600px;")
     .upload-section
       h3 上传文件
       .upload-area
@@ -109,6 +118,84 @@ block pageScripts
         });
       }
 
+      // 初始化 Monaco Editor
+      require.config({ paths: { 'vs': 'https://cdn.jsdelivr.net/npm/monaco-editor@0.36.1/min/vs' }});
+      require(['vs/editor/editor.main'], function() {
+        let editor = null;
+
+        // 创建编辑器实例
+        function createEditor() {
+          editor = monaco.editor.create(document.getElementById('monaco-editor'), {
+            value: '',
+            language: 'plaintext',
+            theme: 'vs-dark',
+            automaticLayout: true
+          });
+        }
+
+        // 显示编辑器
+        window.openFileInEditor = async function(filename) {
+          try {
+            const response = await fetch(`/manage/tasks/files/${pageId}/content/${filename}`);
+            const content = await response.text();
+            
+            if (!editor) {
+              createEditor();
+            }
+
+            // 根据文件扩展名设置语言
+            const ext = filename.split('.').pop().toLowerCase();
+            const langMap = {
+              'js': 'javascript',
+              'py': 'python',
+              'html': 'html',
+              'css': 'css',
+              'json': 'json',
+              // 添加更多语言映射
+            };
+            
+            editor.setModel(monaco.editor.createModel(content, langMap[ext] || 'plaintext'));
+            $('.editor-section').show();
+            
+            // 保存当前编辑的文件名
+            editor.currentFile = filename;
+          } catch (err) {
+            alert('读取文件失败');
+          }
+        };
+
+        // 保存文件
+        $('#saveFile').click(async function() {
+          if (!editor || !editor.currentFile) return;
+
+          try {
+            const content = editor.getValue();
+            const response = await fetch(`/manage/tasks/files/${pageId}/save/${editor.currentFile}`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ content })
+            });
+
+            if (response.ok) {
+              alert('保存成功');
+              loadFiles();
+            } else {
+              alert('保存失败');
+            }
+          } catch (err) {
+            alert('保存失败');
+          }
+        });
+
+        // 关闭编辑器
+        $('#closeEditor').click(function() {
+          $('.editor-section').hide();
+        });
+      });
+
+      // 修改文件列表渲染代码,添加编辑按钮
       function loadFiles() {
         $.get(`/manage/tasks/files/${pageId}/list`, function(files) {
           const tbody = $('#filesList');
@@ -121,7 +208,7 @@ block pageScripts
             tr.append(`<td>${new Date(file.mtime).toLocaleString()}</td>`);
             tr.append(`
               <td class="actions">
-                <a href="/data/${userId}/${pageId}/${file.name}" target="_blank">查看</a> |
+                <button onclick="openFileInEditor('${file.name}')">编辑</button> |
                 <button onclick="deleteFile('${file.name}')">删除</button>
               </td>
             `);

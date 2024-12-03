@@ -41,7 +41,7 @@ router.get('/all', async (req, res) => {
 // 创建分享链接
 router.post('/create', async (req, res) => {
     try {
-        const { pageId } = req.body;
+        const { pageId, note } = req.body;  // 获取备注
 
         // 验证页面所有权
         const page = await Page.findOne({
@@ -56,7 +56,8 @@ router.post('/create', async (req, res) => {
         const link = new Link({
             pageId,
             creatorGuestId: req.cookies.guestId,
-            visitCount: 0
+            visitCount: 0,
+            note: note // 保存备注
         });
 
         await link.save();
@@ -116,14 +117,37 @@ router.post('/delete', async (req, res) => {
             return res.status(403).json({ error: '无权限删除此链接' });
         }
 
-        // 删除链接和相关的访问记录
-        await Promise.all([
-            Link.findOneAndDelete({ linkId }),
-            Visit.deleteMany({ linkId }) // 添加这行
-        ]);
+        // 开启会话事务确保原子性
+        const session = await mongoose.startSession();
+        session.startTransaction();
 
-        res.sendStatus(200);
+        try {
+            // 1. 获取所有相关访问记录的访客ID
+            const visits = await Visit.find({ linkId }).lean();
+            const guestIds = [...new Set(visits.map(v => v.guest))]; // 去重访客ID
+
+            // 2. 按顺序删除所有关联数据
+            await Promise.all([
+                // 删除访问记录
+                Visit.deleteMany({ linkId }, { session }),
+                // 删除关联的访客记录
+                Guest.deleteMany({ _id: { $in: guestIds } }, { session }),
+                // 删除链接本身
+                Link.findOneAndDelete({ linkId }, { session })
+            ]);
+
+            // 提交事务
+            await session.commitTransaction();
+            res.sendStatus(200);
+        } catch (err) {
+            // 如果出错回滚事务
+            await session.abortTransaction();
+            throw err;
+        } finally {
+            session.endSession();
+        }
     } catch (err) {
+        console.error('删除链接失败:', err);
         res.status(500).json({ error: '删除失败' });
     }
 });
@@ -153,7 +177,7 @@ router.get('/:pageId/list', async (req, res) => {
         const links = await Link.find({ pageId: req.params.pageId });
         res.json(links);
     } catch (err) {
-        res.status(500).json({ error: '获取分享链接列表失败' });
+        res.status(500).json({ error: '获取分享链接列表失��' });
     }
 });
 

@@ -139,4 +139,26 @@ router.post('/:pageId/delete', async (req, res) => {
     }
 });
 
+// 获取文件内容
+router.get('/:pageId/content/:filename', async (req, res) => {
+    try {
+        const filePath = path.join(__dirname, '../../data', req.user.userId, req.params.pageId, req.params.filename);
+        const content = await fs.readFile(filePath, 'utf8');
+        res.send(content);
+    } catch (err) {
+        res.status(500).json({ error: '读取文件失败' });
+    }
+});
+
+// 保存文件内容
+router.post('/:pageId/save/:filename', async (req, res) => {
+    try {
+        const filePath = path.join(__dirname, '../../data', req.user.userId, req.params.pageId, req.params.filename);
+        await fs.writeFile(filePath, req.body.content, 'utf8');
+        res.json({ success: true });
+    } catch (err) {
+        res.status(500).json({ error: '保存文件失败' });
+    }
+});
+
 module.exports = router;

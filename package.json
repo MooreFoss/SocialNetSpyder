@@ -15,6 +15,7 @@
     "dotenv": "^16.4.5",
     "express": "~4.16.1",
     "fs-extra": "^11.2.0",
+    "geoip-lite": "^1.4.10",
     "http-errors": "~1.6.3",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.7.0",
@@ -22,6 +23,7 @@
     "multer": "^1.4.5-lts.1",
     "pug": "2.0.0-beta11",
     "sass": "^1.79.4",
+    "ua-parser-js": "^2.0.0",
     "uuid": "^10.0.0"
   },
   "description": "A tool for investigating the spread of social networking sites.",
