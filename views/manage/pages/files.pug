@@ -112,7 +112,7 @@ block pageScripts
           },
           error: function(xhr) {
             const errorMsg = xhr.responseJSON?.error || '上传失败';
-            alert(errorMsg);
+            Modal.alert(errorMsg);
             $('.progress').hide();
           }
         });
@@ -160,7 +160,7 @@ block pageScripts
             // 保存当前编辑的文件名
             editor.currentFile = filename;
           } catch (err) {
-            alert('读取文件失败');
+            Modal.alert('读取文件失败');
           }
         };
 
@@ -179,13 +179,13 @@ block pageScripts
             });
 
             if (response.ok) {
-              alert('保存成功');
+              Modal.alert('保存成功');
               loadFiles();
             } else {
-              alert('保存失败');
+              Modal.alert('保存失败');
             }
           } catch (err) {
-            alert('保存失败');
+            Modal.alert('保存失败');
           }
         });
 
@@ -225,8 +225,9 @@ block pageScripts
         return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
       }
 
-      window.deleteFile = function(filename) {
-        if (confirm('确定要删除此文件吗？')) {
+      window.deleteFile = async function(filename) {
+        const confirmed = await Modal.confirm('确定要删除此文件吗');
+        if (confirmed) {
           $.ajax({
             url: `/manage/tasks/files/${pageId}/delete`,
             type: 'POST',
@@ -235,7 +236,7 @@ block pageScripts
               loadFiles();
             },
             error: function() {
-              alert('删除失败');
+              Modal.alert('删除失败');
             }
           });
         }

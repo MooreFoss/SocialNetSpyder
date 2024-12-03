@@ -87,7 +87,7 @@ block pageScripts
         const note = $('#note').val();
         
         if (!pageId) {
-          alert('请选择页面');
+          Modal.alert('请选择页面');
           return;
         }
 
@@ -97,13 +97,13 @@ block pageScripts
           data: { pageId, note },
           success: function(response) {
             const shareUrl = window.location.origin + response.shareUrl;
-            alert(`分享链接创建成功！\n${shareUrl}`);
+            Modal.alert(`分享链接创建成功！\n${shareUrl}`);
             modal.css('display', 'none');
             $('#createShareForm')[0].reset();
             loadShareLinks();
           },
           error: function(xhr) {
-            alert('创建分享链接失败');
+            Modal.alert('创建分享链接失败');
           }
         });
       });
@@ -142,9 +142,9 @@ block pageScripts
 
       window.copyShareUrl = function(url) {
         navigator.clipboard.writeText(url).then(() => {
-          alert('链接已复制到剪贴板');
+          Modal.alert('链接已复制到剪贴板');
         }).catch(() => {
-          alert('复制失败，请手动复制：' + url);
+          Modal.alert('复制失败，请手动复制：' + url);
         });
       };
 
@@ -157,13 +157,14 @@ block pageScripts
             loadShareLinks();
           },
           error: function() {
-            alert('操作失败');
+            Modal.alert('操作失败');
           }
         });
       };
 
-      window.deleteShareLink = function(linkId) {
-        if (confirm('确定要删除此分享链接吗？')) {
+      window.deleteShareLink = async function(linkId) {
+        const confirmed = await Modal.confirm('确定要删除此分享链接吗？');
+        if (confirmed) {
           $.ajax({
             type: 'POST',
             url: '/manage/share/delete',
@@ -172,7 +173,7 @@ block pageScripts
               loadShareLinks();
             },
             error: function() {
-              alert('删除失败');
+              Modal.alert('删除失败');
             }
           });
         }

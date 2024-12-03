@@ -4,7 +4,7 @@ $secondary-color: #2ecc71;
 $error-color: #e74c3c;
 $background-color: #ecf0f1;
 $text-color: #2c3e50;
-
+@import 'modal';
 // 全局样式
 body {
   font-family: 'Arial', sans-serif;

@@ -90,13 +90,13 @@ block pageScripts
           url: '/manage/tasks/create',
           data: formData,
           success: function(response) {
-            alert('创建成功');
+            Modal.alert('创建成功');
             modal.css('display', 'none');
             loadPages();
             $('#createPageForm')[0].reset();
           },
           error: function(xhr) {
-            alert(xhr.responseJSON.msg || '创建失败');
+            Modal.alert(xhr.responseJSON.msg || '创建失败');
           }
         });
       });
@@ -147,14 +147,15 @@ block pageScripts
             loadPages();
           },
           error: function(xhr) {
-            alert('操作失败');
+            Modal.alert('操作失败');
           }
         });
       }
 
       // 添加删除页面函数
-      window.deletePage = function(pageId) {
-        if (confirm('确定要删除此页面吗？此操作不可恢复！')) {
+      window.deletePage = async function(pageId) {
+        const confirmed = await Modal.confirm('确定要删除此页面吗？此操作不可恢复！');
+        if (confirmed) {
           $.ajax({
             type: 'POST',
             url: '/manage/tasks/delete',
@@ -163,7 +164,7 @@ block pageScripts
               loadPages();
             },
             error: function(xhr) {
-              alert('删除失败');
+              Modal.alert('删除失败');
             }
           });
         }

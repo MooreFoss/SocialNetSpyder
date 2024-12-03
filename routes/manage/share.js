@@ -8,7 +8,8 @@ const Page = require('../../models/page');
 // 添加分享管理首页路由
 router.get('/', async (req, res) => {
     res.render('manage/pages/share', {
-        currentPage: 'share'
+        currentPage: 'share',
+        username: res.locals.user.username
     });
 });
 

@@ -1,1 +1,22 @@
 extends ../layout
+
+block content
+  .settings-container
+    h1 账户设置
+    
+    .change-password-section
+      h2 修改密码
+      form.change-password-form(method="POST" action="/settings/change-password")
+        .form-group
+          label(for="currentPassword") 当前密码
+          input#currentPassword(type="password" name="currentPassword" required)
+        
+        .form-group  
+          label(for="newPassword") 新密码
+          input#newPassword(type="password" name="newPassword" required)
+        
+        .form-group
+          label(for="confirmPassword") 确认新密码 
+          input#confirmPassword(type="password" name="confirmPassword" required)
+        
+        button.btn.btn-primary(type="submit") 修改密码

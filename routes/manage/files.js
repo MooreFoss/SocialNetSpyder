@@ -51,7 +51,8 @@ router.get('/:pageId', async (req, res) => {
         res.render('manage/pages/files', {
             page,
             pageId: page.pageId,
-            userId: res.locals.user.userId
+            userId: res.locals.user.userId,
+            username: res.locals.user.username
         });
     } catch (err) {
         console.error(err);

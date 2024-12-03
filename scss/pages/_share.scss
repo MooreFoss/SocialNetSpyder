@@ -145,7 +145,7 @@
     
     // 悬停效果
     &:hover {
-      border-color: darken($border-color, 10%);
+      border-color: color.adjust($border-color, $lightness: -10%);
     }
   }
 

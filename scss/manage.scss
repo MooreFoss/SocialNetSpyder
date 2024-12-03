@@ -1,4 +1,5 @@
 // 变量定义
+@use "sass:color";
 $primary-color: #1a73e8;
 $secondary-color: #f8f9fa;
 $text-color: #333;
@@ -18,6 +19,8 @@ $transition-time: 0.3s;
 @import 'pages/share';
 @import 'pages/data';
 @import 'pages/dashboard';
+@import 'pages/settings';
+@import 'modal';
 
 // Mixins
 @mixin flex-center {

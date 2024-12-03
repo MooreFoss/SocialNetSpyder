@@ -5,7 +5,8 @@ require('dotenv').config();
 module.exports = async (req, res, next) => {
   const token = req.cookies.token;
   if (!token) {
-    return res.status(401).send('Access Denied');
+    // 401 错误重定向到主页
+    return res.redirect('/');
   }
 
   try {
@@ -13,6 +14,7 @@ module.exports = async (req, res, next) => {
     req.user = verified;
     next();
   } catch (err) {
-    res.status(400).send('Invalid Token');
+    // 400 错误重定向到主页
+    res.redirect('/');
   }
 };

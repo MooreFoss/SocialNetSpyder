@@ -36,7 +36,7 @@ html(lang="zh")
             url: '/register',
             data: formData,
             success: function(response) {
-              alert('注册成功');
+              Modal.alert('注册成功');
               window.location.href = '/login';
             },
             error: function(xhr) {
