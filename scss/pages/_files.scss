@@ -140,6 +140,69 @@
           text-decoration: underline;
         }
       }
+
+      button {
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: all 0.2s ease;
+        margin: 0 0.25rem;
+        color: white;
+        
+        &:hover {
+          opacity: 0.9;
+          transform: translateY(-1px);
+        }
+        
+        &:active {
+          transform: translateY(0);
+        }
+
+        // 根据功能设置不同按钮颜色
+        &[onclick*="openFileInEditor"] {
+          background: #2196F3;  // 编辑按钮使用蓝色
+        }
+        
+        &[onclick*="deleteFile"] {
+          background: #F44336;  // 删除按钮使用红色
+        }
+      }
+    }
+  }
+
+  // 编辑器头部按钮样式统一
+  .editor-header {
+    .btn {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+      margin: 0 0.25rem;
+      color: white;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      
+      &:hover {
+        opacity: 0.9;
+        transform: translateY(-1px);
+      }
+      
+      &:active {
+        transform: translateY(0);
+      }
+    }
+
+    #closeEditor {
+      background: #F44336;  // 关闭按钮使用红色
+    }
+
+    #saveFile {
+      background: #4CAF50;  // 保存按钮使用绿色
     }
   }
 }

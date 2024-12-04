@@ -129,6 +129,42 @@
   background-color: #1a73e8;
   color: white;
 }
+.page-management .page-table td button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  margin: 0 0.25rem;
+  height: 36px;
+  line-height: 1;
+  min-width: 80px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  color: white;
+}
+.page-management .page-table td button:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+.page-management .page-table td button:active {
+  transform: translateY(0);
+}
+.page-management .page-table td button[onclick*="window.open"] {
+  background: #4CAF50;
+}
+.page-management .page-table td button[onclick*=files] {
+  background: #2196F3;
+}
+.page-management .page-table td button[onclick*=togglePageStatus] {
+  background: #FFA000;
+}
+.page-management .page-table td button.delete-btn {
+  background: #F44336;
+}
 .page-management .actions {
   margin-bottom: 2rem;
 }
@@ -142,17 +178,18 @@
   border-radius: 4px;
   font-size: 1rem;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: transform 0.2s ease;
 }
 .page-management .actions .btn:hover {
-  background-color: rgb(18.8928571429, 92, 188.1071428571);
+  opacity: 0.9;
+  transform: translateY(-1px);
 }
 .page-management .actions .btn:focus {
   outline: none;
   box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
 }
 .page-management .actions .btn:active {
-  transform: translateY(1px);
+  transform: translateY(0);
 }
 
 .file-manager {
@@ -274,6 +311,55 @@
 .file-manager .files-table .actions a:hover, .file-manager .files-table .actions button:hover {
   text-decoration: underline;
 }
+.file-manager .files-table .actions button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  margin: 0 0.25rem;
+  color: white;
+}
+.file-manager .files-table .actions button:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+.file-manager .files-table .actions button:active {
+  transform: translateY(0);
+}
+.file-manager .files-table .actions button[onclick*=openFileInEditor] {
+  background: #2196F3;
+}
+.file-manager .files-table .actions button[onclick*=deleteFile] {
+  background: #F44336;
+}
+.file-manager .editor-header .btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  margin: 0 0.25rem;
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.file-manager .editor-header .btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+.file-manager .editor-header .btn:active {
+  transform: translateY(0);
+}
+.file-manager .editor-header #closeEditor {
+  background: #F44336;
+}
+.file-manager .editor-header #saveFile {
+  background: #4CAF50;
+}
 
 .file-header {
   display: flex;
@@ -351,6 +437,14 @@
   cursor: pointer;
   font-size: 0.9rem;
   transition: all 0.2s ease;
+  margin: 0 0.25rem;
+  height: 36px;
+  line-height: 1;
+  min-width: 80px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
@@ -375,6 +469,14 @@
   cursor: pointer;
   font-size: 0.9rem;
   transition: all 0.2s ease;
+  margin: 0 0.25rem;
+  height: 36px;
+  line-height: 1;
+  min-width: 80px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
   margin: 0 0.25rem;
 }
 .share-management .share-table td button:hover {
@@ -403,6 +505,14 @@
   cursor: pointer;
   font-size: 0.9rem;
   transition: all 0.2s ease;
+  margin: 0 0.25rem;
+  height: 36px;
+  line-height: 1;
+  min-width: 80px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
   background: #1a73e8;
   color: white;
   width: 100%;
