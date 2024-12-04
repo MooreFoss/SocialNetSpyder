@@ -19,25 +19,28 @@ async function incrementVisitCount(linkId) {
     }
 }
 
-// 修改 isFirstVisit 函数为 shouldRecordVisit
 async function shouldRecordVisit(linkId, guestId, currentParentGuestId) {
     try {
-        const existingVisit = await Visit.findOne({
+        // 查找所有符合条件的访问记录
+        const existingVisits = await Visit.find({
             linkId,
             guestId
         });
-        
-        // 如果没有访问记录，应该记录
-        if (!existingVisit) {
+
+        // 如果没有任何访问记录，应该记录
+        if (!existingVisits || existingVisits.length === 0) {
             return true;
         }
-        
-        // 如果有访问记录，但父级访客ID不同，也应该记录
-        if (existingVisit.parentGuestId !== currentParentGuestId) {
-            return true;
-        }
-        
-        return false;
+
+        // 检查是否存在父节点相同的访问记录
+        const hasMatchingParent = existingVisits.some(visit =>
+            visit.parentGuestId === currentParentGuestId
+        );
+
+        // 如果找到父节点相同的记录，则不记录新访问
+        // 如果所有记录的父节点都不同，则记录新访问
+        return !hasMatchingParent;
+
     } catch (err) {
         console.error('检查访问记录失败:', err);
         return false;
@@ -82,7 +85,7 @@ router.get('/:linkId', async (req, res) => {
             // 检查是否需要记录访问
             const shouldRecord = await shouldRecordVisit(linkId, guestId, parentGuestId);
             console.log('是否需要记录访问:', shouldRecord);
-            
+
             if (shouldRecord) {
                 await incrementVisitCount(linkId);
 
