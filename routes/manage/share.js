@@ -119,35 +119,16 @@ router.post('/delete', async (req, res) => {
             return res.status(403).json({ error: '无权限删除此链接' });
         }
 
-        // 开启会话事务确保原子性
-        const session = await mongoose.startSession();
-        session.startTransaction();
+        // 获取所有相关访问记录的访客ID
+        const visits = await Visit.find({ linkId }).lean();
+        const guestIds = [...new Set(visits.map(v => v.guest))];
 
-        try {
-            // 1. 获取所有相关访问记录的访客ID
-            const visits = await Visit.find({ linkId }).lean();
-            const guestIds = [...new Set(visits.map(v => v.guest))]; // 去重访客ID
+        // 按顺序删除所有关联数据
+        await Visit.deleteMany({ linkId });
+        await Guest.deleteMany({ _id: { $in: guestIds } });
+        await Link.findOneAndDelete({ linkId });
 
-            // 2. 按顺序删除所有关联数据
-            await Promise.all([
-                // 删除访问记录
-                Visit.deleteMany({ linkId }, { session }),
-                // 删除关联的访客记录
-                Guest.deleteMany({ _id: { $in: guestIds } }, { session }),
-                // 删除链接本身
-                Link.findOneAndDelete({ linkId }, { session })
-            ]);
-
-            // 提交事务
-            await session.commitTransaction();
-            res.sendStatus(200);
-        } catch (err) {
-            // 如果出错回滚事务
-            await session.abortTransaction();
-            throw err;
-        } finally {
-            session.endSession();
-        }
+        res.sendStatus(200);
     } catch (err) {
         console.error('删除链接失败:', err);
         res.status(500).json({ error: '删除失败' });
