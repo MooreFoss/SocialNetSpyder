@@ -540,12 +540,47 @@
 }
 .data-analysis .link-selector {
   margin-bottom: 2rem;
+  position: relative;
+  width: 100%;
+  max-width: 400px;
 }
 .data-analysis .link-selector select {
+  width: 100%;
   min-width: 200px;
-  padding: 0.5rem;
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
+  padding: 12px 16px;
+  font-size: 16px;
+  line-height: 1.4;
+  color: #333;
+  background-color: #fff;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  appearance: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 20px;
+  padding-right: 40px;
+}
+.data-analysis .link-selector select:hover {
+  border-color: #0D47A1;
+  background-color: #f8f9fa;
+}
+.data-analysis .link-selector select:focus {
+  outline: none;
+  border-color: #1976D2;
+  box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.2);
+}
+.data-analysis .link-selector select option {
+  padding: 12px;
+  font-size: 16px;
+}
+.data-analysis .link-selector label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #666;
 }
 .data-analysis #treeChart {
   min-height: 200px;
