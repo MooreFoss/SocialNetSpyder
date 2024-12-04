@@ -1,13 +1,17 @@
 extends ../layout
 
+
 block content
   .data-analysis
     h2 数据分析
     .analysis-section
       h3 传播路径分析
       .link-selector
-        select#linkSelect
-          option(value='') 选择分享链接...
+        .selector-group
+          select#linkSelect
+            option(value='') 选择分享链接...
+          button#refreshBtn(title='刷新当前视图')
+            i.fas.fa-sync-alt
       #treeChart
       #tooltip.tooltip(style='opacity: 0;')
 
@@ -171,6 +175,20 @@ block scripts
             drawTree(data);
           } catch (err) {
             console.error('获取数据失败:', err);
+          }
+        }
+      });
+      
+      // 在 document.ready 函数中添加刷新按钮事件处理
+      $('#refreshBtn').on('click', async function() {
+        const linkId = $('#linkSelect').val();
+        if (linkId) {
+          try {
+            const res = await fetch(`/manage/data/tree/${linkId}`);
+            const data = await res.json();
+            drawTree(data);
+          } catch (err) {
+            console.error('刷新数据失败:', err);
           }
         }
       });

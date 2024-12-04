@@ -177,3 +177,30 @@
     @include list.common-list;
   }
 }
+
+.search-box {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 1rem;
+  position: relative;
+
+  input {
+    padding: 0.5rem 2rem 0.5rem 1rem;
+    border: 1px solid $border-color;
+    border-radius: 4px;
+    width: 250px;
+    font-size: 0.9rem;
+
+    &:focus {
+      outline: none;
+      border-color: $primary-color;
+      box-shadow: 0 0 0 2px rgba($primary-color, 0.1);
+    }
+  }
+
+  i {
+    position: absolute;
+    right: 0.75rem;
+    color: #999;
+  }
+}

@@ -175,17 +175,13 @@ function getClientIP(req) {
 
 router.get('/:linkId', async (req, res) => {
     try {
-        // ...
         if (isNewVisitor) {
             const guest = new Guest({
                 ipAddress: getClientIP(req), // 使用新的获取 IP 方法
                 browserInfo: req.headers['user-agent']
             });
-            // ...
         }
-        // ...
     } catch (err) {
-        // ...
     }
 });
 

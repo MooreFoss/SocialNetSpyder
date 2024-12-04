@@ -95,6 +95,40 @@
       font-weight: 500;
       color: #666;
     }
+
+    .selector-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    button#refreshBtn {
+      height: 38px;
+      width: 38px;
+      padding: 0;
+      border: 1px solid #dce0e4;
+      border-radius: 6px;
+      background: white;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+
+      i {
+        font-size: 16px;
+        color: #666;
+      }
+
+      &:hover {
+        background-color: #f8f9fa;
+        border-color: #1976D2;
+      }
+
+      &:active {
+        transform: scale(0.95);
+      }
+    }
   }
   
   #treeChart {

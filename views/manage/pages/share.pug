@@ -9,12 +9,16 @@ block content
       button#createNewShareBtn.btn
         i.fas.fa-plus
         span 新建分享链接
+      // 添加搜索框  
+      .search-box
+        input#shareSearch(type="text" placeholder="搜索分享链接...")
+        i.fas.fa-search
 
     // 新建分享链接的模态弹窗
     .modal#createShareModal
       .modal-content
         .modal-header
-          h3 新建分享链接
+          h3 新���分享链接
           span.close &times;
         .modal-body
           form#createShareForm
@@ -181,4 +185,40 @@ block pageScripts
 
       // 初始加载分享链接列表
       loadShareLinks();
+
+      // 添加搜索功能
+      $('#shareSearch').on('input', function() {
+        const searchTerm = $(this).val().toLowerCase();
+        $('#sharesList tr').each(function() {
+          const $row = $(this);
+          const pageTitle = $row.find('td:eq(0)').text().toLowerCase();
+          const linkId = $row.find('td:eq(1)').text().toLowerCase();
+          const note = $row.find('td:eq(2)').text().toLowerCase();
+          
+          if (pageTitle.includes(searchTerm) || 
+              linkId.includes(searchTerm) || 
+              note.includes(searchTerm)) {
+            $row.show();
+          } else {
+            $row.hide();
+          }
+        });
+      });
+
+      // 增加防抖功能提高性能
+      function debounce(func, wait) {
+        let timeout;
+        return function() {
+          const context = this;
+          const args = arguments;
+          clearTimeout(timeout);
+          timeout = setTimeout(() => func.apply(context, args), wait);
+        };
+      }
+
+      $('#shareSearch, #pageSearch').on('input', 
+        debounce(function() {
+          $(this).trigger('search');
+        }, 300)
+      );
     });

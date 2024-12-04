@@ -192,6 +192,30 @@
   transform: translateY(0);
 }
 
+.search-box {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 1rem;
+  position: relative;
+}
+.search-box input {
+  padding: 0.5rem 2rem 0.5rem 1rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  width: 250px;
+  font-size: 0.9rem;
+}
+.search-box input:focus {
+  outline: none;
+  border-color: #1a73e8;
+  box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.1);
+}
+.search-box i {
+  position: absolute;
+  right: 0.75rem;
+  color: #999;
+}
+
 .file-manager {
   padding: 2rem;
 }
@@ -630,6 +654,30 @@
   color: white;
 }
 
+.search-box {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 1rem;
+  position: relative;
+}
+.search-box input {
+  padding: 0.5rem 2rem 0.5rem 1rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  width: 250px;
+  font-size: 0.9rem;
+}
+.search-box input:focus {
+  outline: none;
+  border-color: #1a73e8;
+  box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.1);
+}
+.search-box i {
+  position: absolute;
+  right: 0.75rem;
+  color: #999;
+}
+
 .data-analysis {
   padding: 2rem;
 }
@@ -710,6 +758,35 @@
   font-size: 13px;
   font-weight: 500;
   color: #666;
+}
+.data-analysis .link-selector .selector-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.data-analysis .link-selector button#refreshBtn {
+  height: 38px;
+  width: 38px;
+  padding: 0;
+  border: 1px solid #dce0e4;
+  border-radius: 6px;
+  background: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+.data-analysis .link-selector button#refreshBtn i {
+  font-size: 16px;
+  color: #666;
+}
+.data-analysis .link-selector button#refreshBtn:hover {
+  background-color: #f8f9fa;
+  border-color: #1976D2;
+}
+.data-analysis .link-selector button#refreshBtn:active {
+  transform: scale(0.95);
 }
 .data-analysis #treeChart {
   min-height: 200px;

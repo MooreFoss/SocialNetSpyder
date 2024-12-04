@@ -5,6 +5,10 @@ block content
   .page-management
     .actions
       button#createPageBtn.btn 新建页面
+      // 添加搜索框
+      .search-box
+        input#pageSearch(type="text" placeholder="搜索页面...")
+        i.fas.fa-search
 
     // 创建页面的模态弹窗
     .modal#createPageModal
@@ -172,4 +176,20 @@ block pageScripts
 
       // 初始加载页面列表
       loadPages();
+
+      // 添加搜索功能
+      $('#pageSearch').on('input', function() {
+        const searchTerm = $(this).val().toLowerCase();
+        $('#pageList tr').each(function() {
+          const $row = $(this);
+          const title = $row.find('td:eq(0)').text().toLowerCase();
+          const pageId = $row.find('td:eq(1)').text().toLowerCase();
+          
+          if (title.includes(searchTerm) || pageId.includes(searchTerm)) {
+            $row.show();
+          } else {
+            $row.hide();
+          }
+        });
+      });
     });
