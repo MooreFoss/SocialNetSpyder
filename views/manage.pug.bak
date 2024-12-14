@@ -71,8 +71,7 @@ html(lang="zh")
                 p 系统运行正常
 
     script.
-      // 原有的时间更新代码保持不变
-      function updateTime() {
+            function updateTime() {
         const now = new Date();
         const formattedTime = now.toLocaleString('zh-CN');
         document.getElementById('current-time').innerText = formattedTime;
@@ -81,8 +80,7 @@ html(lang="zh")
       setInterval(updateTime, 1000);
       window.onload = updateTime;
 
-      // 添加退出按钮点击处理
-      document.querySelector('.btn-logout').addEventListener('click', function() {
+            document.querySelector('.btn-logout').addEventListener('click', function() {
         fetch('/logout', {
           method: 'POST',
           credentials: 'same-origin'

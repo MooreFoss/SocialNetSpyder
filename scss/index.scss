@@ -1,4 +1,3 @@
-// 定义颜色变量
 $primary-color: #3498db;
 $secondary-color: #2ecc71;
 $error-color: #e74c3c;
@@ -7,7 +6,6 @@ $text-color: #2c3e50;
 $header-background: #34495e;
 $footer-background: #2c3e50;
 @import 'modal';
-// 全局样式
 body {
   font-family: 'Arial', sans-serif;
   background-color: $background-color;
@@ -19,7 +17,6 @@ body {
   min-height: 100vh;
 }
 
-// 页眉样式
 header {
   background-color: $header-background;
   color: #fff;
@@ -50,7 +47,6 @@ header {
   }
 }
 
-// 主体样式
 main {
   flex: 1;
   padding: 2rem;
@@ -100,7 +96,6 @@ main {
   }
 }
 
-// 页脚样式
 footer {
   background-color: $footer-background;
   color: #fff;

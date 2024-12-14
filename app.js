@@ -7,8 +7,7 @@ const connectDB = require('./config/db');
 
 const indexRouter = require('./routes/index');
 const loginRouter = require('./routes/login');
-const manageRouter = require('./routes/manage/index'); // 确保这一行存在
-const logoutRouter = require('./routes/logout');
+const manageRouter = require('./routes/manage/index'); const logoutRouter = require('./routes/logout');
 const registerRouter = require('./routes/register');
 const shareRouter = require('./routes/share');
 
@@ -28,8 +27,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/login', loginRouter);
-app.use('/manage', manageRouter); // 确保这一行存在
-app.use('/logout', logoutRouter);
+app.use('/manage', manageRouter); app.use('/logout', logoutRouter);
 app.use('/register', registerRouter);
 app.use('/s', shareRouter);
 

@@ -6,11 +6,10 @@ const jwt = require('jsonwebtoken');
 const path = require('path');
 const Page = require('../models/page');
 
-// 添加检查登录状态的函数
 const checkLoginStatus = (req) => {
   const token = req.cookies.token;
   if (!token) return false;
-  
+
   try {
     jwt.verify(token, process.env.JWT_SECRET);
     return true;
@@ -29,19 +28,17 @@ router.get('/db-status', (req, res) => {
   }
 });
 
-// 修改首页路由
 router.get('/', (req, res) => {
   const isLoggedIn = checkLoginStatus(req);
-  res.render('index', { 
+  res.render('index', {
     title: 'SocialNetSpyder',
     isLoggedIn: isLoggedIn
   });
 });
 
-// 添加动态页面路由
 router.get('/p/:pageId', async (req, res) => {
   try {
-    const page = await Page.findOne({ 
+    const page = await Page.findOne({
       pageId: req.params.pageId,
       status: true // 只处理启用状态的页面
     });
@@ -54,7 +51,7 @@ router.get('/p/:pageId', async (req, res) => {
       // 改为渲染带iframe的模板
       return res.render('iframe', {
         title: page.title,
-        url: page.content 
+        url: page.content
       });
     } else {
       // 静态页面保持不变

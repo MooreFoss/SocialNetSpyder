@@ -51,7 +51,6 @@ router.get('/settings', (req, res) => {
     });
 });
 
-// 创建新页面
 router.post('/tasks/create', async (req, res) => {
     try {
         const { title, type, content } = req.body;
@@ -67,8 +66,7 @@ router.post('/tasks/create', async (req, res) => {
         await page.save();
 
         if (type === 'static') {
-            // 创建页面目录
-            const dir = path.join(__dirname, `../data/${userId}/${page.pageId}`);
+                        const dir = path.join(__dirname, `../data/${userId}/${page.pageId}`);
             await fs.ensureDir(dir);
         }
 
@@ -79,7 +77,6 @@ router.post('/tasks/create', async (req, res) => {
     }
 });
 
-// 获取页面列表
 router.get('/tasks/pages', async (req, res) => {
     try {
         const pages = await Page.find({ userId: res.locals.user.userId });
@@ -89,7 +86,6 @@ router.get('/tasks/pages', async (req, res) => {
     }
 });
 
-// 切换页面状态
 router.post('/tasks/toggle', async (req, res) => {
     try {
         const { pageId, status } = req.body;
@@ -103,11 +99,9 @@ router.post('/tasks/toggle', async (req, res) => {
     }
 });
 
-// 配置文件上传
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    // 使用req.user获取用户信息
-    if (!req.user) {
+        if (!req.user) {
       return cb(new Error('未授权'));
     }
     
@@ -128,7 +122,6 @@ const upload = multer({
   }
 });
 
-// 文件管理页面
 router.get('/tasks/files/:pageId', async (req, res) => {
     try {
         const page = await Page.findOne({
@@ -140,8 +133,7 @@ router.get('/tasks/files/:pageId', async (req, res) => {
             return res.status(404).render('404');
         }
 
-        // 确保传递必要的变量到模板
-        res.render('manage/pages/files', {
+                res.render('manage/pages/files', {
             page,
             pageId: page.pageId,
             userId: res.locals.user.userId
@@ -152,11 +144,9 @@ router.get('/tasks/files/:pageId', async (req, res) => {
     }
 });
 
-// 文件上传路由
 router.post('/tasks/files/:pageId/upload', async (req, res) => {
   try {
-    // 先验证页面权限
-    const page = await Page.findOne({
+        const page = await Page.findOne({
       pageId: req.params.pageId,
       userId: req.user.userId
     });
@@ -165,8 +155,7 @@ router.post('/tasks/files/:pageId/upload', async (req, res) => {
       return res.status(403).json({ error: '无权限上传文件' });
     }
 
-    // 使用multer中间件处理上传
-    const uploadMiddleware = upload.array('files');
+        const uploadMiddleware = upload.array('files');
     
     uploadMiddleware(req, res, function(err) {
       if (err instanceof multer.MulterError) {
@@ -191,12 +180,10 @@ router.post('/tasks/files/:pageId/upload', async (req, res) => {
   }
 });
 
-// 获取文件列表路由
 router.get('/tasks/files/:pageId/list', async (req, res) => {
     try {
         const dir = path.join(__dirname, '../data', res.locals.user.userId, req.params.pageId);
-        await fs.ensureDir(dir); // 确保目录存在
-
+        await fs.ensureDir(dir); 
         const files = await fs.readdir(dir);
         const fileStats = await Promise.all(
             files.map(async file => {
@@ -216,7 +203,6 @@ router.get('/tasks/files/:pageId/list', async (req, res) => {
     }
 });
 
-// 删除文件
 router.post('/tasks/files/:pageId/delete', async (req, res) => {
     try {
         const filePath = path.join(

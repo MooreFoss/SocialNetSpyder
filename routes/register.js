@@ -3,12 +3,10 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
 
-// GET 注册页面
 router.get('/', (req, res) => {
     res.render('register');
 });
 
-// POST 处理注册
 router.post('/', async (req, res) => {
     try {
         const { username, password, confirmPassword } = req.body;

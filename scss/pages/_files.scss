@@ -160,20 +160,16 @@
           transform: translateY(0);
         }
 
-        // 根据功能设置不同按钮颜色
-        &[onclick*="openFileInEditor"] {
-          background: #2196F3;  // 编辑按钮使用蓝色
-        }
+                &[onclick*="openFileInEditor"] {
+          background: #2196F3;          }
         
         &[onclick*="deleteFile"] {
-          background: #F44336;  // 删除按钮使用红色
-        }
+          background: #F44336;          }
       }
     }
   }
 
-  // 编辑器头部按钮样式统一
-  .editor-header {
+    .editor-header {
     .btn {
       padding: 0.5rem 1rem;
       border: none;
@@ -198,12 +194,10 @@
     }
 
     #closeEditor {
-      background: #F44336;  // 关闭按钮使用红色
-    }
+      background: #F44336;      }
 
     #saveFile {
-      background: #4CAF50;  // 保存按钮使用绿色
-    }
+      background: #4CAF50;      }
   }
 }
 

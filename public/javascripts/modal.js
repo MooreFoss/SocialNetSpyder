@@ -1,4 +1,3 @@
-// modal.js
 const Modal = {
     show(options) {
         const modal = document.createElement('div');

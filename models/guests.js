@@ -10,10 +10,9 @@ const guestSchema = new mongoose.Schema({
     },
     ipAddress: String,
     browserInfo: String,
-    // 添加树状图显示相关字段
-    nickname: { 
+    nickname: {
         type: String,
-        default: function() {
+        default: function () {
             return `访客${this.guestId.slice(-6)}`
         }
     },
@@ -31,8 +30,7 @@ const guestSchema = new mongoose.Schema({
     }
 });
 
-// 用于树状��节点显示的虚拟字段
-guestSchema.virtual('displayName').get(function() {
+guestSchema.virtual('displayName').get(function () {
     return `${this.nickname} (${this.totalVisits}次访问)`;
 });
 

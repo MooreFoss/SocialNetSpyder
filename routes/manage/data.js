@@ -6,7 +6,6 @@ const Page = require('../../models/page');
 const UAParser = require('ua-parser-js');
 const geoip = require('geoip-lite');
 
-// 添加 UA 解析函数
 function parseBrowserInfo(ua) {
   if (!ua) return '未知浏览器';
 
@@ -18,7 +17,6 @@ function parseBrowserInfo(ua) {
   return `${browser.name || '未知'} ${browser.version || ''} / ${os.name || '未知'}`;
 }
 
-// 添加 IP 地理位置解析函数
 function getIpLocation(ip) {
   if (!ip || ip === '::1' || ip.includes('127.0.0.1')) {
     return '本地';
@@ -37,7 +35,6 @@ function getIpLocation(ip) {
   return `${geo.country || ''} ${geo.region || ''} ${geo.city || ''}`.trim();
 }
 
-// 添加数据分析页面路由
 router.get('/', (req, res) => {
   res.render('manage/pages/data', {
     currentPage: 'data',
@@ -45,7 +42,6 @@ router.get('/', (req, res) => {
   });
 });
 
-// 获取所有分享链接
 router.get('/links', async (req, res) => {
   try {
     const links = await Link.find({
@@ -57,7 +53,6 @@ router.get('/links', async (req, res) => {
   }
 });
 
-// 修改 data.js 中的树状图数据路由
 router.get('/tree/:linkId', async (req, res) => {
   try {
     const { linkId } = req.params;
@@ -135,7 +130,6 @@ router.get('/tree/:linkId', async (req, res) => {
   }
 });
 
-// 在 data.js 中添加仪表盘统计数据路由
 router.get('/dashboard-stats', async (req, res) => {
   try {
     // 获取用户的页面ID列表

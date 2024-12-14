@@ -5,7 +5,6 @@ const fs = require('fs-extra');
 const path = require('path');
 const Page = require('../../models/page');
 
-// 添加在文件开头的路由配置部分
 router.get('/', (req, res) => {
     res.render('manage/pages/files', {
         currentPage: 'files',
@@ -13,7 +12,6 @@ router.get('/', (req, res) => {
     });
 });
 
-// 配置文件上传
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         if (!req.user) {
@@ -36,7 +34,6 @@ const upload = multer({
     }
 });
 
-// 文件管理页面
 router.get('/:pageId', async (req, res) => {
     try {
         const page = await Page.findOne({
@@ -60,7 +57,6 @@ router.get('/:pageId', async (req, res) => {
     }
 });
 
-// 文件上传路由
 router.post('/:pageId/upload', async (req, res) => {
     try {
         console.log('查询参数:', {
@@ -101,7 +97,6 @@ router.post('/:pageId/upload', async (req, res) => {
     }
 });
 
-// 获取文件列表路由
 router.get('/:pageId/list', async (req, res) => {
     try {
         const dir = path.join(__dirname, '../../data', res.locals.user.userId, req.params.pageId);
@@ -126,7 +121,6 @@ router.get('/:pageId/list', async (req, res) => {
     }
 });
 
-// 删除文件
 router.post('/:pageId/delete', async (req, res) => {
     try {
         const filePath = path.join(
@@ -140,7 +134,6 @@ router.post('/:pageId/delete', async (req, res) => {
     }
 });
 
-// 获取文件内容
 router.get('/:pageId/content/:filename', async (req, res) => {
     try {
         const filePath = path.join(__dirname, '../../data', req.user.userId, req.params.pageId, req.params.filename);
@@ -151,7 +144,6 @@ router.get('/:pageId/content/:filename', async (req, res) => {
     }
 });
 
-// 保存文件内容
 router.post('/:pageId/save/:filename', async (req, res) => {
     try {
         const filePath = path.join(__dirname, '../../data', req.user.userId, req.params.pageId, req.params.filename);

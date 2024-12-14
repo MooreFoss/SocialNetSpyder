@@ -15,7 +15,7 @@ const pageSchema = new mongoose.Schema({
     userId: {
         type: String,
         required: true,
-        ref: 'User' // 添加引用关系
+        ref: 'User'
     },
     type: {
         type: String,
@@ -26,8 +26,7 @@ const pageSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    content: String, // 外部链接URL或静态页面内容
-    creationTime: {
+    content: String, creationTime: {
         type: Date,
         default: Date.now
     },

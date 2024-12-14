@@ -1,8 +1,6 @@
-// 分享管理页面样式
 @use "sass:color";
 @use 'list' as list;
 
-// 通用按钮样式
 @mixin button-base {
   padding: 0.5rem 1rem;
   border: none;
@@ -11,10 +9,7 @@
   font-size: 0.9rem;
   transition: all 0.2s ease;
   margin: 0 0.25rem;
-  height: 36px;  // 添加固定高度
-  line-height: 1;  // 确保文字垂直居中
-  min-width: 80px;  // 添加最小宽度
-  display: inline-flex;
+  height: 36px;    line-height: 1;    min-width: 80px;    display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
@@ -32,8 +27,7 @@
 .share-management {
   padding: 1rem;
 
-  // 分享按钮样式
-  .share-actions {
+    .share-actions {
     margin-bottom: 1rem;
     
     .btn {
@@ -45,22 +39,19 @@
       color: white;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       
-      // 图标样式
-      i {
+            i {
         font-size: 0.9rem;
       }
     }
   }
 
-  // 表格中的操作按钮样式
-  .share-table {
+    .share-table {
     td {
       button {
         @include button-base;
         margin: 0 0.25rem;
         
-        // 根据功能设置不同的样式
-        &[onclick*="copyShareUrl"] {
+                &[onclick*="copyShareUrl"] {
           background: #4CAF50;
           color: white;
         }
@@ -78,8 +69,7 @@
     }
   }
 
-  // 模态框中的提交按钮
-  #createShareForm {
+    #createShareForm {
     button[type="submit"] {
       @include button-base;
       background: $primary-color;
@@ -90,7 +80,6 @@
   }
 }
 
-// 模态框样式
 .modal {
   display: none;
   position: fixed;
@@ -118,7 +107,6 @@
   }
 }
 
-// 表单样式
 .form-group {
   margin-bottom: 1rem;
 
@@ -129,8 +117,7 @@
     font-weight: 500;
   }
 
-  // 输入框基础样式
-  input, select {
+    input, select {
     width: 100%;
     padding: 0.75rem 1rem;
     border: 1px solid $border-color;
@@ -151,14 +138,12 @@
       box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
     }
     
-    // 悬停效果
-    &:hover {
+        &:hover {
       border-color: color.adjust($border-color, $lightness: -10%);
     }
   }
 
-  // 备注输入框特殊样式
-  input#note {
+    input#note {
     background-color: #f9f9f9;
     border-style: solid;
     margin-top: 0.25rem;
@@ -169,7 +154,6 @@
   }
 }
 
-// 分享列表样式
 .share-list-container {
   margin-top: 2rem;
 

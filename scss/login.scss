@@ -1,11 +1,9 @@
-// 定义颜色变量
 $primary-color: #3498db;
 $secondary-color: #2ecc71;
 $error-color: #e74c3c;
 $background-color: #ecf0f1;
 $text-color: #2c3e50;
 @import 'modal';
-// 全局样式
 body {
   font-family: 'Arial', sans-serif;
   background-color: $background-color;
@@ -17,7 +15,6 @@ body {
   margin: 0;
 }
 
-// 登录表单容
 main {
   background: #fff;
   padding: 2rem;
@@ -27,13 +24,11 @@ main {
   text-align: center;
 }
 
-// 标题样式
 h2 {
   margin-bottom: 1.5rem;
   color: $primary-color;
 }
 
-// 表单元素样式
 form {
   display: flex;
   flex-direction: column;
@@ -70,7 +65,6 @@ form {
   }
 }
 
-// 错误消息样式
 #error-message {
   color: $error-color;
   margin-top: 1rem;

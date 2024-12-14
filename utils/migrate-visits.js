@@ -1,4 +1,3 @@
-// scripts/migrate-visits.js
 const mongoose = require('mongoose');
 const Visit = require('../models/visit');
 const Guest = require('../models/guests');

@@ -1,4 +1,3 @@
-// _dashboard.scss
 .dashboard {
   padding: 2rem;
   
@@ -33,8 +32,7 @@
         }
       }
 
-      // 用户信息小部件
-      &.user-widget {
+            &.user-widget {
         .user-info {
           margin: 0.5rem 0;
           
@@ -50,8 +48,7 @@
       }
 
       // 统计信息小部件
-      &.stats-widget {
-        .stats-grid {
+              .stats-grid {
           display: grid;
           gap: 1rem;
         }
@@ -80,7 +77,6 @@
   }
 }
 
-// 响应式调整
 @media (max-width: 768px) {
   .dashboard {
     padding: 1rem;

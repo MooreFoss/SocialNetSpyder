@@ -17,8 +17,7 @@
     }
   }
 
-  // 弹窗样式
-  .modal {
+    .modal {
     display: none;
     position: fixed;
     z-index: 1000;
@@ -126,10 +125,7 @@
         font-size: 0.9rem;
         transition: all 0.2s ease;
         margin: 0 0.25rem;
-        height: 36px;  // 添加固定高度
-        line-height: 1;  // 确保文字垂直居中
-        min-width: 80px;  // 添加最小宽度
-        display: inline-flex;
+        height: 36px;          line-height: 1;          min-width: 80px;          display: inline-flex;
         align-items: center;
         justify-content: center;
         gap: 0.5rem;
@@ -144,8 +140,7 @@
           transform: translateY(0);
         }
 
-        // 固定按钮颜色保持不变
-        &[onclick*="window.open"] {
+                &[onclick*="window.open"] {
           background: #4CAF50;
         }
         
@@ -164,8 +159,7 @@
     }
   }
 
-  // 新建页面按钮样式
-  .actions {
+    .actions {
     margin-bottom: 2rem;
     .btn {
       display: inline-flex;
@@ -177,8 +171,7 @@
       border-radius: 4px;
       font-size: 1rem;
       cursor: pointer;
-      transition: transform 0.2s ease;  // 只保留位移过渡效果
-
+      transition: transform 0.2s ease;  
       &:hover {
         opacity: 0.9;
         transform: translateY(-1px);

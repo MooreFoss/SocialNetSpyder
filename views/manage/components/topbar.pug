@@ -9,16 +9,14 @@
       span 退出
 
 script.
-  // 更新时间
-  function updateTime() {
+    function updateTime() {
     const now = new Date();
     document.getElementById('current-time').innerText = now.toLocaleString('zh-CN');
   }
   setInterval(updateTime, 1000);
   updateTime();
 
-  // 退出按钮处理
-  document.querySelector('.btn-logout').addEventListener('click', function() {
+    document.querySelector('.btn-logout').addEventListener('click', function() {
     fetch('/logout', {
       method: 'POST',
       credentials: 'same-origin'

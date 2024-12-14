@@ -1,6 +1,5 @@
 extends ../layout
 
-
 block content
   .data-analysis
     h2 数据分析
@@ -19,56 +18,49 @@ block scripts
   script(src="https://d3js.org/d3.v7.min.js")
   script.
     $(document).ready(function() {
-      // 加载分享链接列表
-      async function loadLinks() {
+            async function loadLinks() {
         try {
           const res = await fetch('/manage/data/links');
           const links = await res.json();
           const select = $('#linkSelect');
           select.empty().append('<option value="">选择分享链接...</option>');
           links.forEach(link => {
-            const displayText = `${link.note} ${link.linkId}` || `链接 ${link.linkId}`; // 优先使用备注,无备注时显示linkId
-            select.append(`<option value="${link.linkId}">${displayText}</option>`);
+            const displayText = `${link.note} ${link.linkId}` || `链接 ${link.linkId}`;             select.append(`<option value="${link.linkId}">${displayText}</option>`);
           });
         } catch (err) {
           console.error('加载链接失败:', err);
         }
       }
       
-      // 修改树状图绘制代码
-      function drawTree(data) {
-        // 获取容器实际尺寸
+            function drawTree(data) {
         const container = document.getElementById('treeChart');
         const width = container.clientWidth;
         const height = container.clientHeight;
-        
+      
         d3.select('#treeChart').html('');
-        
+      
         const svg = d3.select('#treeChart')
           .append('svg')
           .attr('width', '100%')
           .attr('height', '100%')
           .attr('viewBox', `0 0 ${width} ${height}`);
-          
-        // 添加缩放容器
+      
         const g = svg.append('g');
-        
-        // 添加缩放功能
+      
         const zoom = d3.zoom()
           .scaleExtent([0.1, 3])
           .on('zoom', (event) => {
             g.attr('transform', event.transform);
           });
-          
+      
         svg.call(zoom);
-        
+      
         const tree = d3.tree()
-          .size([height, width - 160]);
-          
+          .size([height, width - 160])
+          .nodeSize([50, 200]);       
         const root = d3.hierarchy(data);
         tree(root);
-        
-        // 绘制连接线
+      
         g.selectAll('.link')
           .data(root.links())
           .enter()
@@ -77,39 +69,30 @@ block scripts
           .attr('d', d3.linkHorizontal()
             .x(d => d.y)
             .y(d => d.x));
-            
-        // 创建节点
+      
         const node = g.selectAll('.node')
           .data(root.descendants())
           .enter()
           .append('g')
           .attr('class', 'node')
           .attr('transform', d => `translate(${d.y},${d.x})`);
-          
-        // 添加节点圆圈
+      
         node.append('circle')
           .attr('r', 10)
           .style('fill', d => {
-            // 10个颜色的渐变方案 - 从深蓝到白色
-          const colors = [
-            '#0D47A1',  // 深蓝色
-            '#1976D2',  // 蓝色
-            '#42A5F5',  // 中等蓝色
-            '#90CAF9',  // 浅蓝色
-            '#E3F2FD'   // 极浅蓝色，接近白色
-          ];
+            const colors = ['#0D47A1', '#1976D2', '#42A5F5', '#90CAF9', '#E3F2FD'];
             return colors[d.depth] || colors[colors.length - 1];
           })
-          .style('stroke', '#0D1B53')  // 使用最深的蓝色作为边框
+          .style('stroke', '#0D1B53')
           .on('mouseover', function(event, d) {
             const tooltip = d3.select('#tooltip');
-            const mouseX = event.clientX; // 使用clientX替代pageX
-            const mouseY = event.clientY; // 使用clientY替代pageY
-            
+            const mouseX = event.clientX;
+            const mouseY = event.clientY;
+      
             tooltip.transition()
               .duration(200)
               .style('opacity', .9);
-            
+      
             tooltip.html(`
               IP地址: ${d.data.ipAddress}<br/>
               浏览器: ${d.data.browserInfo}<br/>
@@ -124,49 +107,42 @@ block scripts
               .duration(500)
               .style('opacity', 0);
           });
-          
-        // 在圆圈下方添加文本
+      
         node.append('text')
-          .attr('dy', '35px')  // 将文本向下移动30像素
-          .attr('text-anchor', 'middle')  // 文本水平居中
-          .style('font-size', '20px')
+          .attr('dy', '.35em')
+          .attr('x', d => d.children ? -13 : 13)
+          .attr('text-anchor', d => d.children ? 'end' : 'start')
+          .style('font-size', '12px')
           .text(d => d.data.name);
-          
-        // 初始化缩放以适应屏幕
+      
         const initialTransform = d3.zoomIdentity
-          .translate(40, height/2)
+          .translate(40, height / 2)
           .scale(0.8);
         svg.call(zoom.transform, initialTransform);
-
-        // 添加 resize 事件监听
+      
         const resizeObserver = new ResizeObserver(entries => {
           for (let entry of entries) {
             const newWidth = entry.contentRect.width;
             const newHeight = entry.contentRect.height;
-            
-            // 更新树布局大小
+      
             tree.size([newHeight, newWidth - 160]);
-            
-            // 重新计算布局
+      
             tree(root);
-            
-            // 更新连接线
+      
             g.selectAll('.link')
               .attr('d', d3.linkHorizontal()
                 .x(d => d.y)
                 .y(d => d.x));
-                
-            // 更新节点位置  
+      
             g.selectAll('.node')
               .attr('transform', d => `translate(${d.y},${d.x})`);
           }
         });
-        
+      
         resizeObserver.observe(container);
       }
       
-      // 监听选择框变化
-      $('#linkSelect').on('change', async function() {
+            $('#linkSelect').on('change', async function() {
         const linkId = $(this).val();
         if (linkId) {
           try {
@@ -179,8 +155,7 @@ block scripts
         }
       });
       
-      // 在 document.ready 函数中添加刷新按钮事件处理
-      $('#refreshBtn').on('click', async function() {
+            $('#refreshBtn').on('click', async function() {
         const linkId = $('#linkSelect').val();
         if (linkId) {
           try {
@@ -193,6 +168,5 @@ block scripts
         }
       });
       
-      // 初始加载
-      loadLinks();
+            loadLinks();
     });

@@ -6,7 +6,6 @@ const Guest = require('../models/guests');
 const Page = require('../models/page');
 const path = require('path');
 
-// 在文件开头添加函数
 async function incrementVisitCount(linkId) {
     try {
         await Link.findOneAndUpdate(
@@ -21,24 +20,19 @@ async function incrementVisitCount(linkId) {
 
 async function shouldRecordVisit(linkId, guestId, currentParentGuestId) {
     try {
-        // 查找所有符合条件的访问记录
         const existingVisits = await Visit.find({
             linkId,
             guestId
         });
 
-        // 如果没有任何访问记录，应该记录
         if (!existingVisits || existingVisits.length === 0) {
             return true;
         }
 
-        // 检查是否存在父节点相同的访问记录
         const hasMatchingParent = existingVisits.some(visit =>
             visit.parentGuestId === currentParentGuestId
         );
 
-        // 如果找到父节点相同的记录，则不记录新访问
-        // 如果所有记录的父节点都不同，则记录新访问
         return !hasMatchingParent;
 
     } catch (err) {
@@ -77,12 +71,10 @@ router.get('/:linkId', async (req, res) => {
             });
         }
 
-        // 提前进行URL重定向检查
         const shouldRedirect = isNewVisitor || guestId !== parentGuestId;
         console.log('重定向检查:', { shouldRedirect, guestId, parentGuestId });
 
         if (shouldRedirect) {
-            // 检查是否需要记录访问
             const shouldRecord = await shouldRecordVisit(linkId, guestId, parentGuestId);
             console.log('是否需要记录访问:', shouldRecord);
 
@@ -107,13 +99,11 @@ router.get('/:linkId', async (req, res) => {
             return res.redirect(newUrl);
         }
 
-        // 如果不需要重定向,直接显示页面
         const page = await Page.findOne({ pageId: link.pageId });
         if (!page) {
             return res.status(404).render('404');
         }
 
-        // 根据页面类型返回响应
         if (page.type === 'link') {
             return res.render('iframe', {
                 title: page.title,

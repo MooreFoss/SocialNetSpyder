@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const readline = require('readline');
 const config = require('../config/db');
 require('dotenv').config();
-// 导入所有模型
 const Visit = require('../models/visit');
 const Guest = require('../models/guests');
 const Link = require('../models/link');
