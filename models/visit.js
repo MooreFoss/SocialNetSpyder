@@ -5,14 +5,17 @@ const visitSchema = new mongoose.Schema({
     guestId: { type: String, required: true },
     parentGuestId: { type: String },
     timestamp: { type: Date, default: Date.now },
-    path: [{ type: String }], // 完整路径数组
-    leafNode: { type: Boolean, default: true }, // 是否为叶子节点
-    childCount: {
-        type: Number    descendantCount: {
-            type:        // 关联访客信息                guest: {
-                type: mongoose.Schema.Types.ObjectI            ref: 'Guest',
-        }
-    });
+    depth: { type: Number, default: 0 },
+    path: [{ type: String }],
+    leafNode: { type: Boolean, default: true },
+    childCount: { type: Number, default: 0 },
+    descendantCount: { type: Number, default: 0 },
+    guest: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Guest',
+        required: true
+    }
+});
 
 visitSchema.index({ linkId: 1, depth: 1 });
 visitSchema.index({ parentGuestId: 1, timestamp: 1 });
@@ -28,11 +31,11 @@ visitSchema.pre('save', async function (next) {
             }
         );
     }
-    // 计算完整路径
     if (this.parentGuestId) {
         const parent = await this.constructor.findOne({ guestId: this.parentGuestId });
         if (parent) {
             this.path = [...parent.path, this.guestId];
+            this.depth = parent.depth + 1;
         }
     } else {
         this.path = [this.guestId];

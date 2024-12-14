@@ -1,8 +1,9 @@
 .dashboard {
   padding: 2rem;
-  
+
   &-welcome {
     margin-bottom: 2rem;
+
     h3 {
       font-size: 1.5rem;
       color: #3498db;
@@ -13,13 +14,13 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
-    
+
     .widget {
       background: #fff;
       border-radius: 8px;
       box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
       padding: 1.5rem;
-      
+
       h3 {
         display: flex;
         align-items: center;
@@ -32,45 +33,43 @@
         }
       }
 
-            &.user-widget {
+      &.user-widget {
         .user-info {
           margin: 0.5rem 0;
-          
+
           .label {
             color: #666;
             margin-right: 0.5rem;
           }
-          
+
           .value {
             color: #333;
           }
         }
       }
 
-      // 统计信息小部件
-              .stats-grid {
-          display: grid;
-          gap: 1rem;
+      .stats-grid {
+        display: grid;
+        gap: 1rem;
+      }
+
+      .stats-number {
+        text-align: center;
+        padding: 1.5rem;
+        background: rgba(52, 152, 219, 0.1);
+        border-radius: 6px;
+
+        .stats-label {
+          display: block;
+          font-size: 0.9rem;
+          color: #666;
+          margin-bottom: 0.5rem;
         }
-        
-        .stats-number {
-          text-align: center;
-          padding: 1.5rem;
-          background: rgba(52, 152, 219, 0.1);
-          border-radius: 6px;
 
-          .stats-label {
-            display: block;
-            font-size: 0.9rem;
-            color: #666;
-            margin-bottom: 0.5rem;
-          }
-
-          .stats-value {
-            font-size: 2.5rem;
-            font-weight: 500;
-            color: #3498db;
-          }
+        .stats-value {
+          font-size: 2.5rem;
+          font-weight: 500;
+          color: #3498db;
         }
       }
     }
@@ -80,7 +79,7 @@
 @media (max-width: 768px) {
   .dashboard {
     padding: 1rem;
-    
+
     &-widgets {
       grid-template-columns: 1fr;
     }
